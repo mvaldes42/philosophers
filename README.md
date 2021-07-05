@@ -109,7 +109,9 @@ From the brief, we can already foresee the **philosopher structure**, with **dis
 		right_fork_locked ?
 		left_fork_locked ?
 		current_action (circles inside a list of actions)
+		time_start_of_action
 		current_status (to output status)
+		time_status_printed
 		timer to next action in real time
 		philosopher_priority in real time
 		time_since_last_meal
@@ -118,15 +120,16 @@ From the brief, we can already foresee the **philosopher structure**, with **dis
 		erno variable
 	}t_philo;
 
-From the brief, we can already foresee the **table structure,** with **similar inputs** in pseudo code :
+From the brief, we can already foresee the **innkeeper structure,** where the philosophers are seated in pseudo code :
 
-	typedef struct s_table
+	typedef struct s_innkeeper
 	{
 		pointer to inputs
 		table of all the philosophers : t_philo *philosophers
-	}t_table;
+		nb_of_meals_left (for the philosopher who has eaten the less)
+	}t_innkeper;
 
-From the brief, we can already foresee the **input structure,** from the given argument in pseudo code :
+From the brief, we can already foresee the shared **input structure,** from the given argument in pseudo code :
 
 	typedef struct s_inputs
 	{
@@ -136,4 +139,31 @@ From the brief, we can already foresee the **input structure,** from the given a
 		time_to_eat
 		time_to_sleep
 		number_of_times_each_philosopher_must_eat
+		e_lst_of_actions *actions;
 	}t_inputs;
+
+	enum e_lst_of_actions{taking_fork(times 2), eating, droping_forks, sleeping, thinking};
+
+
+## INNKEEPER PSEUDO CODE
+
+The innkeeper brings *number_of_philosophers* forks to the table, with one fork between each of them.
+She serves *number_of_times_each_philosopher_must_eat* spaghetti plates to the center of the table, or if not specified, she brings a infinite number of spaghetti. They better pay for all that spaghetti !
+She now can spawn *number_of_philosophers* around one table.
+She has to tell them what to start with : taking a fork, sleeping or thinking.
+She has to keep a watch on the nb of plates eaten. If none are left, the shuts down the inn.
+She has to make sure which fork is available or not.
+She has to make a **priority list of the philosophers that needs to eat the most.**
+She has to make sure the philosophers don't interrupt each others while speaking.
+If one philosopher dies, she has to shut down the inn. Bad press !
+
+### PHILOSOPHERS PSEUDO CODE
+
+Philosophers can start to rotate their actions on taking a fork, sleeping or thinking. They refer to the innkeper to know.
+They have to inform the innkeeper when they are starting to eat so she can make a priority list.
+They have to tell her how many times they have eaten.
+They must ask permission to talk.
+They must inform the innkeeper when they die.
+They have to lock the fork they are using in order to prevent the others from taking it.
+They have to make sure a fork is free before taking it.
+Otherwise, they must rotate between their list of actions.

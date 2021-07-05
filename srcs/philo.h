@@ -6,7 +6,7 @@
 /*   By: mvaldes <mvaldes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/05 14:42:20 by mvaldes           #+#    #+#             */
-/*   Updated: 2021/07/05 14:46:49 by mvaldes          ###   ########.fr       */
+/*   Updated: 2021/07/05 15:15:03 by mvaldes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,5 +21,7 @@
 
 
 // }t_philo;
+
+enum e_lst_of_actions{taking_fork, eating, sleeping, thinking};
 
 #endif
