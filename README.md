@@ -51,7 +51,7 @@
 ⇨ Avoid **deadlocks**.<br>
 ⇨ We don't want a philosopher to pick up a fork that has already been picked up by his neighbor. This is a **race condition**<br>
 ⇨ Since each philosopher must have access to the two mutex locks that are associated with its left and right forks, these mutex locks are **global variables**.<br>
-⇨ Since each philosopher should be run as a thread, we define a **Philosopher class** as a **derived class of class Thread**. (in C a structure)
+⇨ Since each philosopher should be run as a thread, we define a **Philosopher structure**.
 
 ## SET OF SHARED ATTRIBUTES
 
@@ -93,3 +93,47 @@ Thread operations include **thread creation, termination, synchronization (joins
 		-  the errno variable
 		-  alternate signal stack (sigaltstack(2))
 		-  real-time scheduling policy and priority (sched(7))
+
+
+## STRCUTURES CONSTRUCTION
+
+From the brief, we can already foresee the **philosopher structure**, with **distrinct attributes** in pseudo code :
+
+	typedef struct s_philo
+	{
+		process_id; (thread id ?)
+		philo_id;
+		pointer to inputs
+		right_fork_id
+		left_fork_id
+		right_fork_locked ?
+		left_fork_locked ?
+		current_action (circles inside a list of actions)
+		current_status (to output status)
+		timer to next action in real time
+		philosopher_priority in real time
+		time_since_last_meal
+		number_of_meals_eaten
+		current_status (dead or alive)
+		erno variable
+	}t_philo;
+
+From the brief, we can already foresee the **table structure,** with **similar inputs** in pseudo code :
+
+	typedef struct s_table
+	{
+		pointer to inputs
+		table of all the philosophers : t_philo *philosophers
+	}t_table;
+
+From the brief, we can already foresee the **input structure,** from the given argument in pseudo code :
+
+	typedef struct s_inputs
+	{
+		current_timestamp;
+		number_of_philosophers
+		time_to_die
+		time_to_eat
+		time_to_sleep
+		number_of_times_each_philosopher_must_eat
+	}t_inputs;
