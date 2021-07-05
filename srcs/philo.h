@@ -6,7 +6,7 @@
 /*   By: mvaldes <mvaldes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/05 14:42:20 by mvaldes           #+#    #+#             */
-/*   Updated: 2021/07/05 18:09:12 by mvaldes          ###   ########.fr       */
+/*   Updated: 2021/07/05 18:18:14 by mvaldes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include <unistd.h>
 # include <pthread.h>
 # include <stdbool.h>
+# include <sys/time.h>
 
 typedef enum e_actions
 {
@@ -29,31 +30,31 @@ typedef enum e_actions
 
 typedef struct s_inputs
 {
-	long		current_time;
+	signed int	time_current;
 	int			number_of_philosophers;
-	long		time_to_die;
-	long		time_to_eat;
-	long		time_to_sleep;
-	long		number_of_times_each_philosopher_must_eat;
+	signed int	time_to_die;
+	signed int	time_to_eat;
+	signed int	time_to_sleep;
+	int			number_of_times_each_philosopher_must_eat;
 	t_actions	*actions;
 }	t_inputs;
 
 typedef struct s_philo
 {
-	int			process_id;
-	pthread_t	philo_id;
+	int			philo_id;
+	pthread_t	thread_id;
 	t_inputs	inputs;
 	int			right_fork_id;
 	int			left_fork_id;
 	bool		right_fork_locked;
 	bool		left_fork_locked;
 	t_actions	current_action;
-	long		time_start_of_action;
+	signed int	time_start_of_action;
 	char		*current_status;
-	long		time_status_printed;
-	long		timer_to_next;
+	signed int	time_status_printed;
+	signed int	timer_to_next;
 	int			philosopher_priority;
-	long		time_since_last_meal;
+	signed int	time_since_last_meal;
 	int			number_of_meals_eaten;
 	bool		is_alive;
 	int			erno;
