@@ -39,14 +39,16 @@
 	- timestamp_in_ms X is thinking
 	- timestamp_in_ms X died
 - [ ] a max of 10ms is accepted between the death of a philosopher and his printed status
+
 <br>
+
 - [ ] use a mutex to avoid duplicating forks states
 - [ ] each philosopher is a thread
 - [ ] if only one philosopher present, he must die
 
-⇨ Perhaps use a third party to communicate with the philosophers.
-⇨ Possible use of the forks could be : take 0, 1 or 2 at a time.
-⇨ Avoid deadlocks
+⇨ Perhaps use a third party to communicate with the philosophers.<br>
+⇨ Possible use of the forks could be : take 0, 1 or 2 at a time.<br>
+⇨ Avoid deadlocks<br>
 
 ## SET OF SHARED ATTRIBUTES
 
