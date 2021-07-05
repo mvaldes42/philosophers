@@ -139,10 +139,10 @@ From the brief, we can already foresee the shared **input structure,** from the 
 		time_to_eat
 		time_to_sleep
 		number_of_times_each_philosopher_must_eat
-		e_lst_of_actions *actions;
+		e_actions  *actions;
 	}t_inputs;
 
-	enum e_lst_of_actions{taking_fork(times 2), eating, droping_forks, sleeping, thinking};
+	enum e_actions {taking_fork(times 2), EATING, droping_forks, SLEEPING, THINKING};
 
 
 ## INNKEEPER PSEUDO CODE
@@ -151,6 +151,7 @@ From the brief, we can already foresee the shared **input structure,** from the 
 - She serves *number_of_times_each_philosopher_must_eat* spaghetti plates to the center of the table, or if not specified, she brings a infinite number of spaghetti. They better pay for all that spaghetti !
 - She now can spawn *number_of_philosophers* around one table.
 - She has to tell them what to start with : taking a fork, sleeping or thinking.
+- She will probably authorize **each even philosopher to wait** to eat since they need to fork to do that.
 - She has to keep a watch on the nb of plates eaten. If none are left, the shuts down the inn.
 - She has to make sure which fork is available or not.
 - She has to make a **priority list of the philosophers that needs to eat the most.**
@@ -167,3 +168,4 @@ From the brief, we can already foresee the shared **input structure,** from the 
 - They have to lock the fork they are using in order to prevent the others from taking it.
 - They have to make sure a fork is free before taking it.
 - Otherwise, they must rotate between their list of actions.
+
