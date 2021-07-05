@@ -54,8 +54,8 @@
 
 Each program / thread should have the same options.
 
-1. **number_of_philosophers** : is the number of philosophers and also the number of forks.
-2. **time_to_die** : (in milliseconds). If a philosopher doesn’t start eating ’time_to_die’ milliseconds after starting his last meal or the beginning of the simulation, it dies.
-3. **time_to_eat** : (in milliseconds). It is the time it takes for a philosopher to eat. During that time he will need to keep the two forks.
-4. **time_to_sleep** : (in milliseconds). It is the time the philosopher will spend sleeping.
-5. **number_of_times_each_philosopher_must_eat** : argument is optional, if all philosophers eat at least ’number_of_times_each_philosopher_must_eat’ the simulation will stop.
+1.	```number_of_philosophers : the number of philosophers and also the number of forks ```
+2.	```time_to_die : (in milliseconds). If a philosopher doesn’t start eating ’time_to_die’ milliseconds after starting his last meal or the beginning of the simulation, it dies.```
+3.	```time_to_eat : (in milliseconds). The time it takes for a philosopher to eat. During that time he will need to keep the two forks.```
+4.	```time_to_sleep : (in milliseconds). The time the philosopher will spend sleeping.```
+5.	```number_of_times_each_philosopher_must_eat : (optional). If all philosophers eat at least ’number_of_times_each_philosopher_must_eat’ the simulation will stop.```
