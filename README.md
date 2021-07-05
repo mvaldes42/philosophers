@@ -29,11 +29,18 @@
 
 - <font size="3"><ins>**Threading :**<font> <br>
 
-	A thread of exection is the smallest sequence of programmed instructions that can be managed independently by a scheduler.
+	A thread of exection is the smallest sequence of programmed instructions that can be managed *independently* by a *scheduler*.
+
+- <font size="3"><ins>**Scheduling :**<font> <br>
+
+	It is the action of assigning **resources to perform tasks**. The resources may be processors & the tasks may be threads, processes. The scheduling activity is carried out by a process called *scheduler*.
 
 - <font size="3"><ins>**Scheduler :**<font> <br>
+
+	Schedulers are often designed so as to keep all computer resources busy (as in load balancing), allow multiple users to share system resources effectively.
+	The concept of scheduling makes it possible to have computer multitasking with a single central processing unit
 
 
 - <font size="3"><ins>**Mutex :**<font> <br>
 
-	A lock or mutex (mutual exclusion) is a synchronization primitive: a mechanism that enforces limits on access to a ressource when they are many threads of execution.
+	A lock or mutex (mutual exclusion) is a synchronization primitive: a mechanism that enforces *limits on access* to a ressource when they are *many threads* of execution.
