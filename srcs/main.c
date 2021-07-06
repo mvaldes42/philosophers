@@ -6,7 +6,7 @@
 /*   By: mvaldes <mvaldes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/05 17:37:13 by mvaldes           #+#    #+#             */
-/*   Updated: 2021/07/06 14:38:14 by mvaldes          ###   ########.fr       */
+/*   Updated: 2021/07/06 18:36:03 by mvaldes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,10 @@ void	init_inputs(int argc, char **argv, t_innkeper *innkeeper)
 	inputs = &innkeeper->inputs_ptr;
 	if (argc < 4)
 		exit_failure(innkeeper);
+	innkeeper->philo = malloc((innkeeper->inputs_ptr.nb_philo + 1) * \
+	sizeof(innkeeper->philo));
+	innkeeper->inputs_ptr.forks = malloc((innkeeper->inputs_ptr.nb_philo + 1) \
+	* sizeof(innkeeper->philo));
 	gettimeofday(&inputs->current_time, NULL);
 	inputs->start_sim_ms = from_time_to_ms(inputs->current_time);
 	printf("start_sim_ms = %ld\n", inputs->start_sim_ms);
@@ -65,13 +69,55 @@ void	init_inputs(int argc, char **argv, t_innkeper *innkeeper)
 
 void	*philosopher(void *philosoher)
 {
-	t_philo	*philo_ptr;
+	t_philo	*philo;
 
-	philo_ptr = (t_philo *)philosoher;
-	printf("je suis le philosophe n°%d\n", philo_ptr->philo_id);
-	philo_ptr->inputs->nb_plates -= 1;
-	printf("il reste %d meals \n", philo_ptr->inputs->nb_plates);
+	philo = (t_philo *)philosoher;
+	philo->right_fork_id = philo->philo_id - 1;
+	philo->left_fork_id = philo->philo_id;
+	if (philo->right_fork_id == 0)
+		philo->right_fork_id = philo->inputs->nb_philo;
+	while (philo->number_of_meals_eaten < philo->inputs->nb_plates)
+	{
+		// printf("#%d prio is %d\n", philo->philo_id, philo->priority_to_eat);
+		if (philo->priority_to_eat == 1)
+		{
+			philo->number_of_meals_eaten ++;
+			printf("#%d is eating\n", philo->philo_id);
+			usleep(1000000);
+			philo->priority_to_eat = 0;
+		}
+	}
 	return (NULL);
+}
+
+void	innkeeper_job(t_innkeper *innkeeper)
+{
+	int	i;
+
+	innkeeper->nb_of_meals_total = innkeeper->inputs_ptr.nb_plates * \
+	innkeeper->inputs_ptr.nb_philo;
+	innkeeper->nb_of_meals_eaten = 0;
+	while (innkeeper->nb_of_meals_eaten < innkeeper->nb_of_meals_total)
+	{
+		i = 1;
+		while (i <= innkeeper->inputs_ptr.nb_philo)
+		{
+			printf("innkeeper->nb_of_meals_eaten=%d\n", innkeeper->nb_of_meals_eaten);
+			if (innkeeper->philo[i].number_of_meals_eaten == 0 && \
+			innkeeper->philo[i].philo_id % 2 == 0)
+			{
+				innkeeper->philo[i].priority_to_eat = 1;
+				innkeeper->nb_of_meals_eaten++;
+				// printf("#%d prio is 1\n", innkeeper->philo[i].philo_id);
+			}
+			else if (innkeeper->philo[i].priority_to_eat == 0)
+			{
+				innkeeper->philo[i].priority_to_eat = 1;
+				innkeeper->nb_of_meals_eaten++;
+			}
+			i++;
+		}
+	}
 }
 int	main(int argc, char **argv)
 {
@@ -80,9 +126,12 @@ int	main(int argc, char **argv)
 
 	memset(&innkeeper, 0, sizeof(innkeeper));
 	init_inputs(argc, argv, &innkeeper);
-	innkeeper.philo = malloc((innkeeper.inputs_ptr.nb_philo + 1) * \
-	sizeof(innkeeper.philo));
-	printf("il y a max %d plats\n", innkeeper.inputs_ptr.nb_plates);
+	i = 1;
+	while (i <= innkeeper.inputs_ptr.nb_philo)
+	{
+		pthread_mutex_init(&innkeeper.inputs_ptr.forks[i], NULL);
+		i++;
+	}
 	i = 1;
 	while (i <= innkeeper.inputs_ptr.nb_philo)
 	{
@@ -92,6 +141,7 @@ int	main(int argc, char **argv)
 		(void *)&innkeeper.philo[i]);
 		i++;
 	}
+	innkeeper_job(&innkeeper);
 	i = 1;
 	while (i <= innkeeper.inputs_ptr.nb_philo)
 	{
