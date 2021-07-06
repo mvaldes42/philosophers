@@ -6,7 +6,7 @@
 /*   By: mvaldes <mvaldes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/05 17:37:13 by mvaldes           #+#    #+#             */
-/*   Updated: 2021/07/05 18:51:38 by mvaldes          ###   ########.fr       */
+/*   Updated: 2021/07/06 14:38:14 by mvaldes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,26 +27,80 @@
 // f.new_func = scan_data;
 // f.new_func(&f.data);
 
-void	*myThreadFun(void *input)
+// void	*myThreadFun(void *input)
+// {
+// 	sleep(1);
+// 	int *myid = (int *)input;
+// 	printf("Printing GeeksQuiz from Thread %d\n", (int*)myid);
+// 	return (NULL);
+// }
+
+long int	from_time_to_ms(struct timeval what_time)
 {
-	sleep(1);
-	int *myid = (int *)input;
-	printf("Printing GeeksQuiz from Thread %d\n", (int*)myid);
-	return (NULL);
+	long int	ms;
+
+	ms = what_time.tv_sec * 1000 + what_time.tv_usec / 1000;
+	return (ms);
 }
 
-int	main(void)
+void	init_inputs(int argc, char **argv, t_innkeper *innkeeper)
 {
-	pthread_t	thread_id;
-	pthread_t	thread_id_2;
+	t_inputs	*inputs;
 
-	printf("Before Thread 1\n");
-	pthread_create(&thread_id, NULL, myThreadFun, (void*)&thread_id);
-	printf("After Thread 1\n");
-	printf("Before Thread 2\n");
-	pthread_create(&thread_id_2, NULL, myThreadFun, (void*)&thread_id_2);
-	printf("After Thread 2\n");
-	pthread_join(thread_id, NULL);
-	pthread_join(thread_id_2, NULL);
-	exit(0);
+	inputs = &innkeeper->inputs_ptr;
+	if (argc < 4)
+		exit_failure(innkeeper);
+	gettimeofday(&inputs->current_time, NULL);
+	inputs->start_sim_ms = from_time_to_ms(inputs->current_time);
+	printf("start_sim_ms = %ld\n", inputs->start_sim_ms);
+	inputs->nb_philo = atoi(argv[1]);
+	inputs->time_to_die = atoi(argv[2]);
+	inputs->time_to_eat = atoi(argv[3]);
+	inputs->time_to_sleep = atoi(argv[4]);
+	if (argc == 6)
+		inputs->nb_plates = atoi(argv[5]);
+	else
+		inputs->nb_plates = -1;
+}
+
+void	*philosopher(void *philosoher)
+{
+	t_philo	*philo_ptr;
+
+	philo_ptr = (t_philo *)philosoher;
+	printf("je suis le philosophe n°%d\n", philo_ptr->philo_id);
+	philo_ptr->inputs->nb_plates -= 1;
+	printf("il reste %d meals \n", philo_ptr->inputs->nb_plates);
+	return (NULL);
+}
+int	main(int argc, char **argv)
+{
+	int			i;
+	t_innkeper	innkeeper;
+
+	memset(&innkeeper, 0, sizeof(innkeeper));
+	init_inputs(argc, argv, &innkeeper);
+	innkeeper.philo = malloc((innkeeper.inputs_ptr.nb_philo + 1) * \
+	sizeof(innkeeper.philo));
+	printf("il y a max %d plats\n", innkeeper.inputs_ptr.nb_plates);
+	i = 1;
+	while (i <= innkeeper.inputs_ptr.nb_philo)
+	{
+		innkeeper.philo[i].philo_id = i;
+		innkeeper.philo[i].inputs = &innkeeper.inputs_ptr;
+		pthread_create(&innkeeper.philo[i].thread_id, NULL, philosopher, \
+		(void *)&innkeeper.philo[i]);
+		i++;
+	}
+	i = 1;
+	while (i <= innkeeper.inputs_ptr.nb_philo)
+	{
+		pthread_join(innkeeper.philo[i].thread_id, NULL);
+		i++;
+	}
+	// pthread_mutex_init (&food_lock, NULL);
+	// pthread_mutex_init (&num_can_eat_lock, NULL);
+	// for (i = 0; i < PHILOS; i++)
+	// pthread_mutex_init (&chopstick[i], NULL);
+	exit_success(&innkeeper);
 }

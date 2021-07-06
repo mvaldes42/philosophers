@@ -6,7 +6,7 @@
 /*   By: mvaldes <mvaldes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/05 14:42:20 by mvaldes           #+#    #+#             */
-/*   Updated: 2021/07/05 18:18:14 by mvaldes          ###   ########.fr       */
+/*   Updated: 2021/07/06 14:38:11 by mvaldes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # include <pthread.h>
 # include <stdbool.h>
 # include <sys/time.h>
+# include <string.h>
 
 typedef enum e_actions
 {
@@ -30,20 +31,22 @@ typedef enum e_actions
 
 typedef struct s_inputs
 {
-	signed int	time_current;
-	int			number_of_philosophers;
-	signed int	time_to_die;
-	signed int	time_to_eat;
-	signed int	time_to_sleep;
-	int			number_of_times_each_philosopher_must_eat;
-	t_actions	*actions;
+	struct timeval	current_time;
+	long int		start_sim_ms;
+	long int		current_ms;
+	int				nb_philo;
+	int				time_to_die;
+	int				time_to_eat;
+	int				time_to_sleep;
+	int				nb_plates;
+	t_actions		*actions;
 }	t_inputs;
 
 typedef struct s_philo
 {
 	int			philo_id;
 	pthread_t	thread_id;
-	t_inputs	inputs;
+	t_inputs	*inputs;
 	int			right_fork_id;
 	int			left_fork_id;
 	bool		right_fork_locked;
@@ -62,9 +65,17 @@ typedef struct s_philo
 
 typedef struct s_innkeeper
 {
-	t_inputs	*inputs_ptr;
-	t_philo		*philosophers;
+	t_inputs	inputs_ptr;
+	t_philo		*philo;
 	int			nb_of_meals_left;
 }	t_innkeper;
+
+char	**ft_split(char const *s, char c);
+int		word_count(const char *s, char c);
+char	*ft_substr(char const *s, unsigned int start, size_t len);
+char	*ft_strdup(const char *s1);
+char	*ft_strdup(const char *s1);
+void	exit_failure(t_innkeper *innkeeper);
+void	exit_success(t_innkeper *innkeeper);
 
 #endif

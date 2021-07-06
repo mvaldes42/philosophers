@@ -22,7 +22,7 @@
 
 ## RULES
 
-- [ ] one or more philosophers sitting at a round table, named starting at 1
+- [x] one or more philosophers sitting at a round table, named starting at 1
 - [ ] they are seated in order next to each others
 - [ ] only three actions = eating, thinking, sleeping & can only do one action at a time
 - [ ] large bowl of spaghetti at the center
@@ -168,4 +168,48 @@ From the brief, we can already foresee the shared **input structure,** from the 
 - They have to lock the fork they are using in order to prevent the others from taking it.
 - They have to make sure a fork is free before taking it.
 - Otherwise, they must rotate between their list of actions.
+
+		while (no philosopher is dead AND/OR philosopher didn't eat all his plates)
+		{
+			if (I am philosopher #0)
+			{
+				while (innkeeper doesn't tell me to take my forks)
+					think;
+				*(ask permission to speak)*
+			}
+			if (time since starting last meal or the beginning of sim == time_to_die)
+			{
+				dead = true;
+				priority to speak = 1;
+				*(ask permission to speak)*
+			}
+			if (right fork available
+			{
+				grab right fork()
+					->lock right fork
+					-> *(ask permission to speak)*
+			}
+			if left fork available
+			{
+				grab left fork()
+					-> lock left fork
+					-> *(ask permission to speak)*
+			}
+			then
+			{
+				send innkeeper start time of eating
+				eat a plate
+				*(ask permission to speak)*
+			}
+			drop all forks()
+			{
+				-> unlock left fork
+				-> unlock right fork
+				-> *(ask permission to speak)*
+			}
+			go to sleep for sleep time
+				*(ask permission to speak)*
+			while (innkeeper doesn't tell me to take my forks)
+					think;
+		}
 
