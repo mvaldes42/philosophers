@@ -6,7 +6,7 @@
 /*   By: mvaldes <mvaldes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/05 14:42:20 by mvaldes           #+#    #+#             */
-/*   Updated: 2021/07/06 18:31:22 by mvaldes          ###   ########.fr       */
+/*   Updated: 2021/07/07 10:36:11 by mvaldes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,9 @@ typedef struct s_inputs
 	int				nb_plates;
 	pthread_mutex_t	*forks;
 	t_actions		*actions;
+	pthread_mutex_t	meals_lock;
+	int				nb_meals_eaten;
+	int				nb_meals_tot;
 }	t_inputs;
 
 typedef struct s_philo
@@ -66,10 +69,8 @@ typedef struct s_philo
 
 typedef struct s_innkeeper
 {
-	t_inputs	inputs_ptr;
-	t_philo		*philo;
-	int			nb_of_meals_eaten;
-	int			nb_of_meals_total;
+	t_inputs		in_ptr;
+	t_philo			*philo;
 }	t_innkeper;
 
 char	**ft_split(char const *s, char c);
