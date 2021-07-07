@@ -6,7 +6,7 @@
 /*   By: mvaldes <mvaldes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/05 14:42:20 by mvaldes           #+#    #+#             */
-/*   Updated: 2021/07/07 10:36:11 by mvaldes          ###   ########.fr       */
+/*   Updated: 2021/07/07 11:39:18 by mvaldes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # include <stdbool.h>
 # include <sys/time.h>
 # include <string.h>
+# include <stdarg.h>
 
 typedef enum e_actions
 {
@@ -38,12 +39,14 @@ typedef struct s_inputs
 	int				time_to_die;
 	int				time_to_eat;
 	int				time_to_sleep;
+	int				time_to_think;
 	int				nb_plates;
 	pthread_mutex_t	*forks;
 	t_actions		*actions;
 	pthread_mutex_t	meals_lock;
 	int				nb_meals_eaten;
 	int				nb_meals_tot;
+	pthread_mutex_t	can_i_talk;
 }	t_inputs;
 
 typedef struct s_philo

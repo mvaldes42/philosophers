@@ -6,7 +6,7 @@
 /*   By: mvaldes <mvaldes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/05 17:37:13 by mvaldes           #+#    #+#             */
-/*   Updated: 2021/07/07 10:48:32 by mvaldes          ###   ########.fr       */
+/*   Updated: 2021/07/07 11:50:41 by mvaldes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,49 @@ void	init_inputs(int argc, char **argv, t_innkeper *inn)
 		inputs->nb_plates = atoi(argv[5]);
 	else
 		inputs->nb_plates = -1;
+	inputs->time_to_think = inputs->time_to_eat;
+}
+
+void	p_eat(t_philo *philo)
+{
+	if (philo->inputs->nb_meals_eaten < philo->inputs->nb_meals_tot && \
+	philo->number_of_meals_eaten < philo->inputs->nb_plates)
+	{
+		pthread_mutex_lock(&philo->inputs->meals_lock);
+		philo->inputs->nb_meals_eaten++;
+		philo->number_of_meals_eaten++;
+		pthread_mutex_lock(&philo->inputs->can_i_talk);
+		printf("#%d is eating, he ate %d plates, for plates eaten total = %d\n"\
+		, philo->philo_id, philo->number_of_meals_eaten, \
+		philo->inputs->nb_meals_eaten);
+		pthread_mutex_unlock(&philo->inputs->can_i_talk);
+		pthread_mutex_unlock(&philo->inputs->meals_lock);
+		usleep(philo->inputs->time_to_eat * 1000);
+	}
+}
+
+void	p_sleep(t_philo *philo)
+{
+	if (philo->inputs->nb_meals_eaten < philo->inputs->nb_meals_tot && \
+	philo->number_of_meals_eaten < philo->inputs->nb_plates)
+	{
+		pthread_mutex_lock(&philo->inputs->can_i_talk);
+		printf("#%d is sleeping\n", philo->philo_id);
+		pthread_mutex_unlock(&philo->inputs->can_i_talk);
+		usleep(philo->inputs->time_to_sleep * 1000);
+	}
+}
+
+void	p_think(t_philo *philo)
+{
+	if (philo->inputs->nb_meals_eaten < philo->inputs->nb_meals_tot && \
+	philo->number_of_meals_eaten < philo->inputs->nb_plates)
+	{
+		pthread_mutex_lock(&philo->inputs->can_i_talk);
+		printf("#%d is thinking\n", philo->philo_id);
+		pthread_mutex_unlock(&philo->inputs->can_i_talk);
+		usleep(philo->inputs->time_to_think * 1000);
+	}
 }
 
 void	*philosopher(void *philosoher)
@@ -74,18 +117,28 @@ void	*philosopher(void *philosoher)
 	philo->left_fork_id = philo->philo_id;
 	printf("#%d has %d plates\n", philo->philo_id, philo->number_of_meals_eaten);
 	if (philo->right_fork_id == 0)
+	{
 		philo->right_fork_id = philo->inputs->nb_philo;
-	while (philo->inputs->nb_meals_eaten < philo->inputs->nb_meals_tot &&\
+	}
+	while (philo->inputs->nb_meals_eaten < philo->inputs->nb_meals_tot && \
 	philo->number_of_meals_eaten < philo->inputs->nb_plates)
 	{
-		pthread_mutex_lock(&philo->inputs->meals_lock);
-		philo->inputs->nb_meals_eaten++;
-		philo->number_of_meals_eaten++;
-		printf("#%d is eating, he ate %d plates, for plates eaten total = %d\n"\
-		, philo->philo_id, philo->number_of_meals_eaten, \
-		philo->inputs->nb_meals_eaten);
-		pthread_mutex_unlock(&philo->inputs->meals_lock);
-		usleep(1000000);
+		if (philo->inputs->nb_meals_eaten == 0 && philo->philo_id % 2 == 0)
+		{
+			p_eat(philo);
+			p_sleep(philo);
+			p_think(philo);
+		}
+		else if (philo->inputs->nb_meals_eaten == 0 && philo->philo_id % 2 == 1)
+		{
+			p_think(philo);
+		}
+		else
+		{
+			p_eat(philo);
+			p_sleep(philo);
+			p_think(philo);
+		}
 	}
 	return (NULL);
 }
@@ -127,6 +180,7 @@ int	main(int argc, char **argv)
 	memset(&inn, 0, sizeof(inn));
 	init_inputs(argc, argv, &inn);
 	pthread_mutex_init(&inn.in_ptr.meals_lock, NULL);
+	pthread_mutex_init(&inn.in_ptr.can_i_talk, NULL);
 	inn.in_ptr.nb_meals_tot = inn.in_ptr.nb_plates * inn.in_ptr.nb_philo;
 	i = 1;
 	while (i <= inn.in_ptr.nb_philo)
