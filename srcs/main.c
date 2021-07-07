@@ -6,34 +6,20 @@
 /*   By: mvaldes <mvaldes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/05 17:37:13 by mvaldes           #+#    #+#             */
-/*   Updated: 2021/07/07 11:50:41 by mvaldes          ###   ########.fr       */
+/*   Updated: 2021/07/07 15:02:51 by mvaldes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
 // milliseconds = microseconds ÷ 1,000
-// struct object{
-//         int data;
-//         void (*new_func) (int * data);
-// };
 
-// void scan_data (int * data) {
-//         printf(" input : ");
-//         scanf("%d", data);
-// }
-
-// struct object f;
-// f.new_func = scan_data;
-// f.new_func(&f.data);
-
-// void	*myThreadFun(void *input)
-// {
-// 	sleep(1);
-// 	int *myid = (int *)input;
-// 	printf("Printing GeeksQuiz from Thread %d\n", (int*)myid);
-// 	return (NULL);
-// }
+//4 410 200 200
+// 5 800 200 200
+// 4 310 200 100 (mort)
+// Avec 2 philosophes seulement pour tester le delai d'affichage de la mort
+// ya aussi 5 800 200 200 7
+// et 1 800 200 200 (depuis recemment)
 
 long int	from_time_to_ms(struct timeval what_time)
 {
@@ -69,8 +55,11 @@ void	init_inputs(int argc, char **argv, t_innkeper *inn)
 void	p_eat(t_philo *philo)
 {
 	if (philo->inputs->nb_meals_eaten < philo->inputs->nb_meals_tot && \
-	philo->number_of_meals_eaten < philo->inputs->nb_plates)
+	philo->number_of_meals_eaten < philo->inputs->nb_plates &&\
+	philo->is_alive == 1)
 	{
+		pthread_mutex_lock(&philo->inputs->forks[philo->right_fork_id]);
+		pthread_mutex_lock(&philo->inputs->forks[philo->left_fork_id]);
 		pthread_mutex_lock(&philo->inputs->meals_lock);
 		philo->inputs->nb_meals_eaten++;
 		philo->number_of_meals_eaten++;
@@ -79,15 +68,22 @@ void	p_eat(t_philo *philo)
 		, philo->philo_id, philo->number_of_meals_eaten, \
 		philo->inputs->nb_meals_eaten);
 		pthread_mutex_unlock(&philo->inputs->can_i_talk);
-		pthread_mutex_unlock(&philo->inputs->meals_lock);
+		gettimeofday(&philo->time_since_last_meal, NULL);
 		usleep(philo->inputs->time_to_eat * 1000);
+		pthread_mutex_lock(&philo->inputs->can_i_talk);
+		printf("#%d forks down\n", philo->philo_id);
+		pthread_mutex_unlock(&philo->inputs->can_i_talk);
+		pthread_mutex_unlock(&philo->inputs->forks[philo->right_fork_id]);
+		pthread_mutex_unlock(&philo->inputs->forks[philo->left_fork_id]);
+		pthread_mutex_unlock(&philo->inputs->meals_lock);
 	}
 }
 
 void	p_sleep(t_philo *philo)
 {
 	if (philo->inputs->nb_meals_eaten < philo->inputs->nb_meals_tot && \
-	philo->number_of_meals_eaten < philo->inputs->nb_plates)
+	philo->number_of_meals_eaten < philo->inputs->nb_plates &&\
+	philo->is_alive == 1)
 	{
 		pthread_mutex_lock(&philo->inputs->can_i_talk);
 		printf("#%d is sleeping\n", philo->philo_id);
@@ -99,12 +95,12 @@ void	p_sleep(t_philo *philo)
 void	p_think(t_philo *philo)
 {
 	if (philo->inputs->nb_meals_eaten < philo->inputs->nb_meals_tot && \
-	philo->number_of_meals_eaten < philo->inputs->nb_plates)
+	philo->number_of_meals_eaten < philo->inputs->nb_plates &&\
+	philo->is_alive == 1)
 	{
 		pthread_mutex_lock(&philo->inputs->can_i_talk);
 		printf("#%d is thinking\n", philo->philo_id);
 		pthread_mutex_unlock(&philo->inputs->can_i_talk);
-		usleep(philo->inputs->time_to_think * 1000);
 	}
 }
 
@@ -115,25 +111,35 @@ void	*philosopher(void *philosoher)
 	philo = (t_philo *)philosoher;
 	philo->right_fork_id = philo->philo_id - 1;
 	philo->left_fork_id = philo->philo_id;
+	philo->am_i_even = philo->philo_id % 2;
+	philo->is_alive = 1;
+	gettimeofday(&philo->time_since_last_meal, NULL);
 	printf("#%d has %d plates\n", philo->philo_id, philo->number_of_meals_eaten);
 	if (philo->right_fork_id == 0)
 	{
 		philo->right_fork_id = philo->inputs->nb_philo;
 	}
 	while (philo->inputs->nb_meals_eaten < philo->inputs->nb_meals_tot && \
-	philo->number_of_meals_eaten < philo->inputs->nb_plates)
+	philo->number_of_meals_eaten < philo->inputs->nb_plates &&\
+	philo->is_alive == 1)
 	{
-		if (philo->inputs->nb_meals_eaten == 0 && philo->philo_id % 2 == 0)
+		if (philo->inputs->nb_meals_eaten == 0 && philo->am_i_even == 0)
 		{
+			pthread_mutex_lock(&philo->inputs->can_i_talk);
+			printf("#%d / 2 = %d\n", philo->philo_id, philo->am_i_even);
+			pthread_mutex_unlock(&philo->inputs->can_i_talk);
 			p_eat(philo);
 			p_sleep(philo);
 			p_think(philo);
 		}
-		else if (philo->inputs->nb_meals_eaten == 0 && philo->philo_id % 2 == 1)
+		else if (philo->inputs->nb_meals_eaten == 0 && philo->am_i_even == 1)
 		{
+			pthread_mutex_lock(&philo->inputs->can_i_talk);
+			printf("#%d / 2 = %d\n", philo->philo_id, philo->am_i_even);
+			pthread_mutex_unlock(&philo->inputs->can_i_talk);
 			p_think(philo);
 		}
-		else
+		else if (philo->inputs->nb_meals_eaten != 0)
 		{
 			p_eat(philo);
 			p_sleep(philo);
@@ -143,34 +149,35 @@ void	*philosopher(void *philosoher)
 	return (NULL);
 }
 
-// void	innkeeper_job(t_innkeper *inn)
-// {
-// 	int	i;
+void	*are_philo_dead(void *innkeeper)
+{
+	t_innkeper		*inn;
+	int				i;
+	struct timeval	current_time;
 
-// 	inn->nb_meals_tot = inn->in_ptr.nb_plates * \
-// 	inn->in_ptr.nb_philo;
-	// while (inn->meals_lock < inn->nb_meals_tot)
-	// {
-	// 	i = 1;
-	// 	while (i <= inn->in_ptr.nb_philo)
-	// 	{
-	// 		printf("inn->meals_lock=%d\n", inn->meals_lock);
-	// 		if (inn->philo[i].number_of_meals_eaten == 0 && \
-	// 		inn->philo[i].philo_id % 2 == 0)
-	// 		{
-	// 			inn->philo[i].priority_to_eat = 1;
-	// 			inn->meals_lock++;
-	// 			// printf("#%d prio is 1\n", inn->philo[i].philo_id);
-	// 		}
-	// 		else if (inn->philo[i].priority_to_eat == 0)
-	// 		{
-	// 			inn->philo[i].priority_to_eat = 1;
-	// 			inn->meals_lock++;
-	// 		}
-	// 		i++;
-	// 	}
-	// }
-// }
+	inn = (t_innkeper *)innkeeper;
+	inn->in_ptr.no_one_dead = 1;
+	while (inn->in_ptr.no_one_dead)
+	{
+		i = 1;
+		while (i <= inn->in_ptr.nb_philo)
+		{
+			gettimeofday(&current_time, NULL);
+			if (from_time_to_ms(current_time) - \
+			from_time_to_ms(inn->philo[i].time_since_last_meal) < \
+			inn->in_ptr.time_to_die)
+				i++;
+			else
+			{
+				printf("#%d is dead\n", inn->philo[i].philo_id);
+				inn->in_ptr.no_one_dead = 0;
+				exit_success(inn);
+			}
+		}
+		usleep(10 * 1000);
+	}
+	return (NULL);
+}
 
 int	main(int argc, char **argv)
 {
@@ -188,6 +195,7 @@ int	main(int argc, char **argv)
 		pthread_mutex_init(&inn.in_ptr.forks[i], NULL);
 		i++;
 	}
+	pthread_create(&inn.death_clock, NULL, are_philo_dead, (void *)&inn);
 	i = 1;
 	while (i <= inn.in_ptr.nb_philo)
 	{
