@@ -6,7 +6,7 @@
 /*   By: mvaldes <mvaldes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/05 14:42:20 by mvaldes           #+#    #+#             */
-/*   Updated: 2021/07/09 15:54:40 by mvaldes          ###   ########.fr       */
+/*   Updated: 2021/07/09 19:17:48 by mvaldes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,22 +20,22 @@
 # include <sys/time.h>
 # include <string.h>
 # include <stdarg.h>
+# include <math.h>
 
-typedef enum e_actions
+typedef enum e_states
 {
-	TAKING_A_FORK,
 	EATING,
-	DROPING_FORKS,
 	SLEEPING,
 	THINKING,
-}	t_actions;
+}	t_states;
 
 typedef struct s_shared_inputs
 {
 	pthread_mutex_t	*forks_lock;
-	pthread_mutex_t	plates_lock;
+	pthread_mutex_t	*plates_lock;
 	pthread_mutex_t	talk_lock;
 	int				nb_total_meals_eaten;
+	bool			*can_i_eat;
 }	t_shared_in;
 
 typedef struct s_inputs
@@ -62,6 +62,7 @@ typedef struct s_philo
 	int				nb_plates_eaten;
 	int				nb_plates_allowed;
 	bool			is_alive;
+	t_states		state;
 }	t_philo;
 
 typedef struct s_innkeeper
