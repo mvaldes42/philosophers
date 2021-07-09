@@ -6,7 +6,7 @@
 /*   By: mvaldes <mvaldes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/05 14:42:20 by mvaldes           #+#    #+#             */
-/*   Updated: 2021/07/09 15:45:31 by mvaldes          ###   ########.fr       */
+/*   Updated: 2021/07/09 15:54:40 by mvaldes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,7 @@ typedef struct s_innkeeper
 	t_shared_in		shared_in;
 	pthread_t		death_clock;
 	struct timeval	current_time;
+	bool			no_death;
 }	t_innkeper;
 
 char	**ft_split(char const *s, char c);

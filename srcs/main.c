@@ -6,7 +6,7 @@
 /*   By: mvaldes <mvaldes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/05 17:37:13 by mvaldes           #+#    #+#             */
-/*   Updated: 2021/07/09 15:51:09 by mvaldes          ###   ########.fr       */
+/*   Updated: 2021/07/09 16:35:04 by mvaldes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ long int	from_time_to_ms(struct timeval what_time)
 {
 	long int	ms;
 
-	ms = what_time.tv_usec / 1000;
+	ms = what_time.tv_sec * 1000 + what_time.tv_usec / 1000;
 	return (ms);
 }
 
@@ -54,12 +54,20 @@ void	init_inputs(int argc, char **argv, t_innkeper *inn)
 
 void	p_eat(t_philo *philo)
 {
+	struct timeval	c_time;
+	int				x;
+
+	gettimeofday(&c_time, NULL);
+	x = from_time_to_ms(c_time) - from_time_to_ms(philo->time_since_last_meal);
+	//
 	pthread_mutex_lock(&philo->shared_in->forks_lock[philo->right_fork_id]);
 	pthread_mutex_lock(&philo->shared_in->forks_lock[philo->left_fork_id]);
 	pthread_mutex_lock(&philo->shared_in->plates_lock);
+	gettimeofday(&philo->time_since_last_meal, NULL);
 	philo->shared_in->nb_total_meals_eaten++;
 	philo->nb_plates_eaten++;
 	pthread_mutex_lock(&philo->shared_in->talk_lock);
+	printf("#%d x = %ld, ttd = %d\n", philo->philo_id, x, philo->inputs->time_to_die);
 	printf("#%d is eating, he ate %d plates,\n", philo->philo_id, \
 	philo->nb_plates_eaten);
 	pthread_mutex_unlock(&philo->shared_in->talk_lock);
@@ -115,7 +123,9 @@ void	*philosopher(void *philosoher)
 			p_think(philo);
 			p_eat(philo);
 		}
-		else if (philo->nb_plates_eaten != 0 && philo->nb_plates_eaten < philo->nb_plates_allowed)
+		else if (philo->nb_plates_eaten != 0 && \
+		philo->nb_plates_eaten < philo->nb_plates_allowed && \
+		philo->is_alive == 1)
 		{
 			p_eat(philo);
 			p_sleep(philo);
@@ -125,37 +135,41 @@ void	*philosopher(void *philosoher)
 	return (NULL);
 }
 
-// void	*are_philo_dead(void *innkeeper)
-// {
-// 	t_innkeper		*inn;
-// 	int				i;
-// 	struct timeval	current_time;
-// 	long int		x;
+void	*are_philo_dead(void *innkeeper)
+{
+	t_innkeper		*inn;
+	int				i;
+	struct timeval	current_time;
+	long int		x;
 
-// 	inn = (t_innkeper *)innkeeper;
-// 	inn->in_ptr.no_one_dead = 1;
-// 	usleep(10 * 1000);
-// 	while (inn->in_ptr.no_one_dead)
-// 	{
-// 		i = 1;
-// 		while (i <= inn->in_ptr.nb_philo)
-// 		{
-// 			gettimeofday(&current_time, NULL);
-// 			x = from_time_to_ms(current_time) - \
-// 			from_time_to_ms(inn->philo[i].time_since_last_meal);
-// 			if (x < inn->in_ptr.time_to_die)
-// 				i++;
-// 			else
-// 			{
-// 				printf("#%d is dead\n", inn->philo[i].philo_id);
-// 				inn->in_ptr.no_one_dead = 0;
-// 				exit_success(inn);
-// 			}
-// 		}
-// 		usleep(10 * 1000);
-// 	}
-// 	return (NULL);
-// }
+	inn = (t_innkeper *)innkeeper;
+	inn->no_death = 1;
+	while (inn->no_death)
+	{
+		i = 1;
+		while (i <= inn->in_ptr.nb_philo)
+		{
+			// printf("philo #%d x = %ld, ttd = %d\n", i, x, inn->in_ptr.time_to_die);
+			gettimeofday(&current_time, NULL);
+			x = from_time_to_ms(current_time) - \
+			from_time_to_ms(inn->philo[i].time_since_last_meal);
+			if (x < inn->in_ptr.time_to_die)
+				i++;
+			else if (inn->philo[i].nb_plates_eaten == 0)
+				usleep(10 * 1000);
+			else
+			{
+				printf("philo #%d x = %ld, ttd = %d\n", i, x, inn->in_ptr.time_to_die);
+				printf("#%d is dead\n", inn->philo[i].philo_id);
+				inn->philo[i].is_alive = 0;
+				inn->no_death = 0;
+				exit_success(inn);
+			}
+		}
+		usleep(5 * 1000);
+	}
+	return (NULL);
+}
 
 int	main(int argc, char **argv)
 {
@@ -173,7 +187,7 @@ int	main(int argc, char **argv)
 		pthread_mutex_init(&inn.shared_in.forks_lock[i], NULL);
 		i++;
 	}
-	// pthread_create(&inn.death_clock, NULL, are_philo_dead, (void *)&inn);
+	pthread_create(&inn.death_clock, NULL, are_philo_dead, (void *)&inn);
 	i = 1;
 	while (i <= inn.in_ptr.nb_philo)
 	{
