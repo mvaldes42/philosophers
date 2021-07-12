@@ -6,7 +6,7 @@
 /*   By: mvaldes <mvaldes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/05 14:42:20 by mvaldes           #+#    #+#             */
-/*   Updated: 2021/07/12 15:20:11 by mvaldes          ###   ########.fr       */
+/*   Updated: 2021/07/12 15:55:05 by mvaldes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,13 +41,14 @@ typedef struct s_shared_inputs
 
 typedef struct s_inputs
 {
-	int			nb_p;
-	int			time_die;
-	int			time_eat;
-	int			time_sleep;
-	int			time_thk;
-	int			plts_p_philo;
-	int			plts_tot;
+	int				nb_p;
+	int				time_die;
+	int				time_eat;
+	int				time_sleep;
+	int				time_thk;
+	int				plts_p_philo;
+	int				plts_tot;
+	struct timeval	sim_start_time;
 }	t_inputs;
 
 typedef struct s_philo
@@ -72,7 +73,6 @@ typedef struct s_innkeeper
 	t_philo			*p;
 	t_shared_in		s_in;
 	pthread_t		death_clock;
-	struct timeval	c_time;
 	bool			no_death;
 }	t_innkeper;
 

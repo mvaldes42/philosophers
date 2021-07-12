@@ -6,7 +6,7 @@
 /*   By: mvaldes <mvaldes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/12 11:52:26 by mvaldes           #+#    #+#             */
-/*   Updated: 2021/07/12 14:33:03 by mvaldes          ###   ########.fr       */
+/*   Updated: 2021/07/12 15:55:07 by mvaldes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 static void	parse_inputs(int argc, char **argv, t_innkeper *inn, t_inputs *in)
 {
-	gettimeofday(&inn->c_time, NULL);
+	gettimeofday(&inn->in_ptr.sim_start_time, NULL);
 	in->nb_p = atoi(argv[1]);
 	in->time_die = atoi(argv[2]);
 	in->time_eat = atoi(argv[3]);

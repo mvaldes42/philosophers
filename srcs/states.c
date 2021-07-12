@@ -6,7 +6,7 @@
 /*   By: mvaldes <mvaldes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/12 11:48:55 by mvaldes           #+#    #+#             */
-/*   Updated: 2021/07/12 15:30:04 by mvaldes          ###   ########.fr       */
+/*   Updated: 2021/07/12 16:04:13 by mvaldes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,6 @@ p->p_id, x, p->inputs->time_die);
 
 void	p_eat(t_philo *p)
 {
-	struct timeval	c_time;
 	struct timeval	time;
 	int				x;
 
@@ -48,7 +47,9 @@ void	p_eat(t_philo *p)
 	if (x >= p->inputs->time_die)
 	{
 		p->alive = 0;
-		usleep(10 * 1000);
+		// printf("p #%d x = %d, ttd = %d\n", p->p_id, x, p->inputs->time_die);
+		// talk(&p->s_in->talk_lock, "#%d is deadddd\n", p->p_id);
+		// exit(EXIT_SUCCESS);
 	}
 	else
 	{
@@ -56,22 +57,37 @@ void	p_eat(t_philo *p)
 		gettimeofday(&p->lst_meal, NULL);
 		p->s_in->tot_plts_eaten++;
 		p->plts_eaten++;
-		talk_two(&p->s_in->talk_lock, "#%d is eating, he ate %d plates,\n", \
+		gettimeofday(&time, NULL);
+		talk_3(&p->s_in->talk_lock, "%d >> #%d is eating, he ate %d plates,\n", \
+		from_time_to_ms(time) - from_time_to_ms(p->inputs->sim_start_time) , \
 		p->p_id, p->plts_eaten);
 		usleep(p->inputs->time_eat * 1000);
-		talk(&p->s_in->talk_lock, "#%d forks down\n", p->p_id);
+		gettimeofday(&time, NULL);
+		talk_2(&p->s_in->talk_lock, "%d >> #%d forks down\n", \
+		from_time_to_ms(time) - from_time_to_ms(p->inputs->sim_start_time) , \
+		p->p_id);
 		eating_unlock(p);
 	}
 }
 
 void	p_sleep(t_philo *p)
 {
-	talk(&p->s_in->talk_lock, "#%d is sleeping\n", p->p_id);
+	struct timeval	time;
+
+	gettimeofday(&time, NULL);
+	talk_2(&p->s_in->talk_lock, "%d >> #%d is sleeping\n", \
+	from_time_to_ms(time) - from_time_to_ms(p->inputs->sim_start_time), \
+	p->p_id);
 	usleep(p->inputs->time_sleep * 1000);
 }
 
 void	p_think(t_philo *p)
 {
+	struct timeval	time;
+
+	gettimeofday(&time, NULL);
 	if (p->alive == 1 && p->plts_eaten < p->plts_max)
-		talk(&p->s_in->talk_lock, "#%d is thinking\n", p->p_id);
+		talk_2(&p->s_in->talk_lock, "%d >> #%d is thinking\n", \
+		from_time_to_ms(time) - from_time_to_ms(p->inputs->sim_start_time), \
+		p->p_id);
 }

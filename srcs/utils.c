@@ -6,7 +6,7 @@
 /*   By: mvaldes <mvaldes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/06 11:08:36 by mvaldes           #+#    #+#             */
-/*   Updated: 2021/07/12 13:07:09 by mvaldes          ###   ########.fr       */
+/*   Updated: 2021/07/12 16:02:55 by mvaldes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,16 +34,16 @@ long int	from_time_to_ms(struct timeval what_time)
 	return (ms);
 }
 
-void	talk(pthread_mutex_t *talk_lock, char *speech, int x)
+void	talk_2(pthread_mutex_t *lock, char *str, int time, int id)
 {
-	pthread_mutex_lock(talk_lock);
-	printf(speech, x);
-	pthread_mutex_unlock(talk_lock);
+	pthread_mutex_lock(lock);
+	printf(str, time, id);
+	pthread_mutex_unlock(lock);
 }
 
-void	talk_two(pthread_mutex_t *talk_lock, char *speech, int x, int y)
+void	talk_3(pthread_mutex_t *lock, char *str, int time, int id, int nb)
 {
-	pthread_mutex_lock(talk_lock);
-	printf(speech, x, y);
-	pthread_mutex_unlock(talk_lock);
+	pthread_mutex_lock(lock);
+	printf(str, time, id, nb);
+	pthread_mutex_unlock(lock);
 }

@@ -6,7 +6,7 @@
 /*   By: mvaldes <mvaldes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/12 11:51:41 by mvaldes           #+#    #+#             */
-/*   Updated: 2021/07/12 15:35:53 by mvaldes          ###   ########.fr       */
+/*   Updated: 2021/07/12 16:04:29 by mvaldes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,13 @@
 
 static void	death_scenario(t_innkeper *inn, int i, long int x)
 {
+	struct timeval	time;
+
+	gettimeofday(&time, NULL);
 	printf("p #%d x = %ld, ttd = %d\n", i, x, inn->in_ptr.time_die);
-	talk(&inn->s_in.talk_lock, "#%d is dead\n", inn->p[i].p_id);
+	talk_2(&inn->s_in.talk_lock, "%d >> #%d is dead\n", \
+	from_time_to_ms(time) - from_time_to_ms(inn->in_ptr.sim_start_time), \
+	inn->p[i].p_id);
 	inn->p[i].alive = 0;
 	inn->no_death = 0;
 	exit_success(inn);
