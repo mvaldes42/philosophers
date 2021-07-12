@@ -6,15 +6,18 @@
 #    By: mvaldes <mvaldes@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/07/05 17:59:50 by mvaldes           #+#    #+#              #
-#    Updated: 2021/07/07 11:55:03 by mvaldes          ###   ########.fr        #
+#    Updated: 2021/07/12 11:53:12 by mvaldes          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME= philo
 
 SRCS =	srcs/main.c\
+		srcs/init_inputs.c\
 		srcs/utils.c\
-		srcs/ft_split.c\
+		srcs/states.c\
+		srcs/t_philos.c\
+		srcs/t_death_clock.c\
 
 OBJS = $(SRCS:.c=.o)
 CC = @gcc

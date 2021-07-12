@@ -6,7 +6,7 @@
 /*   By: mvaldes <mvaldes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/05 14:42:20 by mvaldes           #+#    #+#             */
-/*   Updated: 2021/07/12 11:29:10 by mvaldes          ###   ########.fr       */
+/*   Updated: 2021/07/12 11:52:52 by mvaldes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,57 +31,58 @@ typedef enum e_states
 
 typedef struct s_shared_inputs
 {
-	pthread_mutex_t	*forks_lock;
-	pthread_mutex_t	*plates_lock;
+	pthread_mutex_t	*frk_lck;
+	pthread_mutex_t	*plts_lck;
 	pthread_mutex_t	talk_lock;
-	int				nb_total_meals_eaten;
+	int				tot_plts_eaten;
 	bool			*can_i_eat;
-	pthread_mutex_t	*eating_s_lock;
+	pthread_mutex_t	*state_lck;
 }	t_shared_in;
 
 typedef struct s_inputs
 {
-	int			nb_philo;
-	int			time_to_die;
-	int			time_to_eat;
-	int			time_to_sleep;
-	int			time_to_think;
-	int			nb_plates_per_philo;
-	int			nb_plates_total;
+	int			nb_p;
+	int			time_die;
+	int			time_eat;
+	int			time_sleep;
+	int			time_thk;
+	int			plts_p_philo;
+	int			plts_tot;
 }	t_inputs;
 
 typedef struct s_philo
 {
-	int				philo_id;
-	pthread_t		thread_id;
+	int				p_id;
+	pthread_t		t_id;
 	t_inputs		*inputs;
-	t_shared_in		*shared_in;
-	int				am_i_even;
-	int				right_fork_id;
-	int				left_fork_id;
-	struct timeval	time_since_last_meal;
-	int				nb_plates_eaten;
-	int				nb_plates_allowed;
-	bool			is_alive;
-	int				state_eating;
+	t_shared_in		*s_in;
+	int				is_even;
+	int				r_frk_id;
+	int				l_frk_id;
+	struct timeval	lst_meal;
+	int				plts_eaten;
+	int				plts_max;
+	bool			alive;
+	bool			eating;
 }	t_philo;
 
 typedef struct s_innkeeper
 {
 	t_inputs		in_ptr;
-	t_philo			*philo;
-	t_shared_in		shared_in;
+	t_philo			*p;
+	t_shared_in		s_in;
 	pthread_t		death_clock;
-	struct timeval	current_time;
+	struct timeval	c_time;
 	bool			no_death;
 }	t_innkeper;
 
-char	**ft_split(char const *s, char c);
-int		word_count(const char *s, char c);
-char	*ft_substr(char const *s, unsigned int start, size_t len);
-char	*ft_strdup(const char *s1);
-char	*ft_strdup(const char *s1);
-void	exit_failure(t_innkeper *innkeeper);
-void	exit_success(t_innkeper *innkeeper);
+void	init_inputs(int argc, char **argv, t_innkeper *inn);
+
+void	*philosopher(void *philosoher);
+void	*are_philo_dead(void *innkeeper);
+
+void	p_eat(t_philo *p);
+void	p_sleep(t_philo *p);
+void	p_think(t_philo *p);
 
 #endif
