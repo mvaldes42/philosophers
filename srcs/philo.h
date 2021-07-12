@@ -6,7 +6,7 @@
 /*   By: mvaldes <mvaldes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/05 14:42:20 by mvaldes           #+#    #+#             */
-/*   Updated: 2021/07/09 19:17:48 by mvaldes          ###   ########.fr       */
+/*   Updated: 2021/07/12 11:29:10 by mvaldes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ typedef struct s_shared_inputs
 	pthread_mutex_t	talk_lock;
 	int				nb_total_meals_eaten;
 	bool			*can_i_eat;
+	pthread_mutex_t	*eating_s_lock;
 }	t_shared_in;
 
 typedef struct s_inputs
@@ -62,7 +63,7 @@ typedef struct s_philo
 	int				nb_plates_eaten;
 	int				nb_plates_allowed;
 	bool			is_alive;
-	t_states		state;
+	int				state_eating;
 }	t_philo;
 
 typedef struct s_innkeeper

@@ -6,7 +6,7 @@
 /*   By: mvaldes <mvaldes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/05 17:37:13 by mvaldes           #+#    #+#             */
-/*   Updated: 2021/07/09 19:25:17 by mvaldes          ###   ########.fr       */
+/*   Updated: 2021/07/12 11:33:25 by mvaldes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,9 @@ void	init_inputs(int argc, char **argv, t_innkeper *inn)
 		exit_failure(inn);
 	inn->philo = malloc((inn->in_ptr.nb_philo + 1) * sizeof(inn->philo));
 	inn->shared_in.forks_lock = malloc((inn->in_ptr.nb_philo + 1) * sizeof(inn->shared_in.forks_lock));
-	gettimeofday(&inn->current_time, NULL);
+	inn->shared_in.eating_s_lock= malloc((inn->in_ptr.nb_philo + 1) * sizeof(inn->shared_in.eating_s_lock));
 	inn->shared_in.plates_lock = malloc((floor(inn->in_ptr.nb_philo / 2) + 1) * sizeof(inn->shared_in.plates_lock));
+	gettimeofday(&inn->current_time, NULL);
 	inputs->nb_philo = atoi(argv[1]);
 	inputs->time_to_die = atoi(argv[2]);
 	inputs->time_to_eat = atoi(argv[3]);
@@ -58,17 +59,19 @@ void	p_eat(t_philo *philo)
 	struct timeval	c_time;
 	int				x;
 
-	gettimeofday(&c_time, NULL);
-	x = from_time_to_ms(c_time) - from_time_to_ms(philo->time_since_last_meal);
+	// gettimeofday(&c_time, NULL);
+	// x = from_time_to_ms(c_time) - from_time_to_ms(philo->time_since_last_meal);
 	pthread_mutex_lock(&philo->shared_in->forks_lock[philo->right_fork_id]);
 	pthread_mutex_lock(&philo->shared_in->forks_lock[philo->left_fork_id]);
 	pthread_mutex_lock(&philo->shared_in->plates_lock[0]);
-	philo->state = EATING;
+	pthread_mutex_lock(&philo->shared_in->eating_s_lock[philo->philo_id]);
+	philo->state_eating = 1;
+	pthread_mutex_unlock(&philo->shared_in->eating_s_lock[philo->philo_id]);
 	gettimeofday(&philo->time_since_last_meal, NULL);
 	philo->shared_in->nb_total_meals_eaten++;
 	philo->nb_plates_eaten++;
 	pthread_mutex_lock(&philo->shared_in->talk_lock);
-	printf("#%d x = %d, ttd = %d\n", philo->philo_id, x, philo->inputs->time_to_die);
+	// printf("#%d x = %d, ttd = %d\n", philo->philo_id, x, philo->inputs->time_to_die);
 	printf("#%d is eating, he ate %d plates,\n", philo->philo_id, \
 	philo->nb_plates_eaten);
 	pthread_mutex_unlock(&philo->shared_in->talk_lock);
@@ -79,6 +82,9 @@ void	p_eat(t_philo *philo)
 	pthread_mutex_unlock(&philo->shared_in->plates_lock[0]);
 	pthread_mutex_unlock(&philo->shared_in->forks_lock[philo->right_fork_id]);
 	pthread_mutex_unlock(&philo->shared_in->forks_lock[philo->left_fork_id]);
+	pthread_mutex_lock(&philo->shared_in->eating_s_lock[philo->philo_id]);
+	philo->state_eating = 0;
+	pthread_mutex_unlock(&philo->shared_in->eating_s_lock[philo->philo_id]);
 }
 
 void	p_sleep(t_philo *philo)
@@ -86,7 +92,6 @@ void	p_sleep(t_philo *philo)
 	pthread_mutex_lock(&philo->shared_in->talk_lock);
 	printf("#%d is sleeping\n", philo->philo_id);
 	pthread_mutex_unlock(&philo->shared_in->talk_lock);
-	philo->state = SLEEPING;
 	usleep(philo->inputs->time_to_sleep * 1000);
 }
 
@@ -95,7 +100,6 @@ void	p_think(t_philo *philo)
 	if (philo->is_alive == 1 && \
 	philo->nb_plates_eaten < philo->nb_plates_allowed)
 	{
-		philo->state = THINKING;
 		pthread_mutex_lock(&philo->shared_in->talk_lock);
 		printf("#%d is thinking\n", philo->philo_id);
 		pthread_mutex_unlock(&philo->shared_in->talk_lock);
@@ -113,6 +117,9 @@ void	*philosopher(void *philosoher)
 	philo->am_i_even = philo->philo_id % 2;
 	philo->is_alive = 1;
 	gettimeofday(&philo->time_since_last_meal, NULL);
+	pthread_mutex_lock(&philo->shared_in->eating_s_lock[philo->philo_id]);
+	philo->state_eating = 0;
+	pthread_mutex_unlock(&philo->shared_in->eating_s_lock[philo->philo_id]);
 	if (philo->right_fork_id == 0)
 	{
 		philo->right_fork_id = philo->inputs->nb_philo;
@@ -191,6 +198,7 @@ int	main(int argc, char **argv)
 	while (i <= inn.in_ptr.nb_philo)
 	{
 		pthread_mutex_init(&inn.shared_in.forks_lock[i], NULL);
+		pthread_mutex_init(&inn.shared_in.eating_s_lock[i], NULL);
 		i++;
 	}
 	pthread_create(&inn.death_clock, NULL, are_philo_dead, (void *)&inn);
