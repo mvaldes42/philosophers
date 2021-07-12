@@ -6,7 +6,7 @@
 /*   By: mvaldes <mvaldes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/12 11:51:41 by mvaldes           #+#    #+#             */
-/*   Updated: 2021/07/12 14:44:55 by mvaldes          ###   ########.fr       */
+/*   Updated: 2021/07/12 15:35:53 by mvaldes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,14 +35,14 @@ static void	check_if_death(t_innkeper *inn, int first_time)
 	{
 		if (first_time)
 		{
-			usleep(10 * 1000);
+			usleep(5 * 1000);
 			first_time = 0;
 		}
 		gettimeofday(&time, NULL);
 		x = from_time_to_ms(time) - from_time_to_ms(inn->p[i].lst_meal);
 		if (x < inn->in_ptr.time_die)
 			i++;
-		else
+		else if (x >= inn->in_ptr.time_die)
 			death_scenario(inn, i, x);
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: mvaldes <mvaldes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/12 11:50:33 by mvaldes           #+#    #+#             */
-/*   Updated: 2021/07/12 14:36:16 by mvaldes          ###   ########.fr       */
+/*   Updated: 2021/07/12 15:23:29 by mvaldes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,15 +28,24 @@ static void	init_philo(t_philo *p)
 
 static void	circle_states(t_philo	*p)
 {
-	p_eat(p);
-	p_sleep(p);
-	p_think(p);
+	if (p->alive == 1 && p->plts_eaten < p->plts_max)
+		p_eat(p);
+	if (p->alive == 1 && p->plts_eaten < p->plts_max)
+		p_sleep(p);
+	if (p->alive == 1 && p->plts_eaten < p->plts_max)
+		p_think(p);
 }
 
 static void	smol_circle_states(t_philo	*p)
 {
-	p_think(p);
-	p_eat(p);
+	if (p->alive == 1 && p->plts_eaten < p->plts_max)
+		p_think(p);
+	if (p->alive == 1 && p->plts_eaten < p->plts_max)
+		p_eat(p);
+	if (p->alive == 1 && p->plts_eaten < p->plts_max)
+		p_sleep(p);
+	if (p->alive == 1 && p->plts_eaten < p->plts_max)
+		p_think(p);
 }
 
 void	*philosopher(void *philosoher)
@@ -59,7 +68,7 @@ void	*philosopher(void *philosoher)
 		p->alive == 1)
 			circle_states(p);
 	}
-	// if (p->plts_eaten == p->plts_max)
-	// 	pthread_join(p->t_id, NULL);
+	if (p->alive)
+		printf("#%d DONE\n", p->p_id);
 	return (NULL);
 }
