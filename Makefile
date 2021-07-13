@@ -6,7 +6,7 @@
 #    By: mvaldes <mvaldes@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/07/05 17:59:50 by mvaldes           #+#    #+#              #
-#    Updated: 2021/07/12 11:53:12 by mvaldes          ###   ########.fr        #
+#    Updated: 2021/07/13 12:32:58 by mvaldes          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,6 +15,7 @@ NAME= philo
 SRCS =	srcs/main.c\
 		srcs/init_inputs.c\
 		srcs/utils.c\
+		srcs/utils_g.c\
 		srcs/states.c\
 		srcs/t_philos.c\
 		srcs/t_death_clock.c\

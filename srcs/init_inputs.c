@@ -6,7 +6,7 @@
 /*   By: mvaldes <mvaldes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/12 11:52:26 by mvaldes           #+#    #+#             */
-/*   Updated: 2021/07/12 15:55:07 by mvaldes          ###   ########.fr       */
+/*   Updated: 2021/07/13 14:10:13 by mvaldes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 static void	parse_inputs(int argc, char **argv, t_innkeper *inn, t_inputs *in)
 {
-	gettimeofday(&inn->in_ptr.sim_start_time, NULL);
+	gettimeofday(&inn->in_ptr.start_time, NULL);
 	in->nb_p = atoi(argv[1]);
 	in->time_die = atoi(argv[2]);
 	in->time_eat = atoi(argv[3]);
@@ -38,10 +38,6 @@ void	init_inputs(int argc, char **argv, t_innkeper *inn)
 	memset(inputs, 0, sizeof(*inputs));
 	memset(&inn->s_in, 0, sizeof(inn->s_in));
 	inn->p = malloc((inn->in_ptr.nb_p + 1) * sizeof(inn->p));
-	inn->s_in.frk_lck = malloc((inn->in_ptr.nb_p + 1) \
-	* sizeof(inn->s_in.frk_lck));
-	inn->s_in.state_lck = malloc((inn->in_ptr.nb_p + 1) \
-	* sizeof(inn->s_in.state_lck));
 	inn->s_in.plts_lck = malloc((floor(inn->in_ptr.nb_p / 2) + 1) \
 	* sizeof(inn->s_in.plts_lck));
 	parse_inputs(argc, argv, inn, inputs);

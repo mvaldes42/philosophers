@@ -6,7 +6,7 @@
 /*   By: mvaldes <mvaldes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/05 14:42:20 by mvaldes           #+#    #+#             */
-/*   Updated: 2021/07/12 15:55:05 by mvaldes          ###   ########.fr       */
+/*   Updated: 2021/07/13 14:10:12 by mvaldes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,12 +31,9 @@ typedef enum e_states
 
 typedef struct s_shared_inputs
 {
-	pthread_mutex_t	*frk_lck;
 	pthread_mutex_t	*plts_lck;
 	pthread_mutex_t	talk_lock;
 	int				tot_plts_eaten;
-	bool			*can_i_eat;
-	pthread_mutex_t	*state_lck;
 }	t_shared_in;
 
 typedef struct s_inputs
@@ -48,7 +45,7 @@ typedef struct s_inputs
 	int				time_thk;
 	int				plts_p_philo;
 	int				plts_tot;
-	struct timeval	sim_start_time;
+	struct timeval	start_time;
 }	t_inputs;
 
 typedef struct s_philo
@@ -60,11 +57,12 @@ typedef struct s_philo
 	int				is_even;
 	int				r_frk_id;
 	int				l_frk_id;
+	pthread_mutex_t	left_lock;
+	pthread_mutex_t	*right_lock;
 	struct timeval	lst_meal;
 	int				plts_eaten;
 	int				plts_max;
 	bool			alive;
-	bool			eating;
 }	t_philo;
 
 typedef struct s_innkeeper

@@ -6,7 +6,7 @@
 /*   By: mvaldes <mvaldes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/12 11:46:08 by mvaldes           #+#    #+#             */
-/*   Updated: 2021/07/13 10:26:09 by mvaldes          ###   ########.fr       */
+/*   Updated: 2021/07/13 13:14:46 by mvaldes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@
 void		exit_failure(t_innkeper *innkeeper);
 void		exit_success(t_innkeper *innkeeper);
 long int	from_time_to_ms(struct timeval what_time);
-void		talk_2(t_philo *p, char *str, struct timeval time, int id);
-void		talk_3(t_philo *p, char *str, struct timeval time, int id, int nb);
+void		say_status(char *str, int id, struct timeval start);
+void		say_status_nb(char *str, int id, int nb, struct timeval start);
+void		ft_putstr(char *s);
+void		ft_putnbr(int n);
 #endif
