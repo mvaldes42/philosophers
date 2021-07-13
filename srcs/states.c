@@ -6,7 +6,7 @@
 /*   By: mvaldes <mvaldes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/12 11:48:55 by mvaldes           #+#    #+#             */
-/*   Updated: 2021/07/13 14:30:54 by mvaldes          ###   ########.fr       */
+/*   Updated: 2021/07/13 14:59:39 by mvaldes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ void	p_eat(t_philo *p)
 		pthread_mutex_lock(&p->s_in->talk_lock);
 		say_status("is eating", p->p_id, p->inputs->start_time);
 		pthread_mutex_unlock(&p->s_in->talk_lock);
-		usleep(p->inputs->time_eat * 1000);
+		ft_usleep(p->inputs->time_eat);
 		eating_unlock(p);
 	}
 }
@@ -63,7 +63,7 @@ void	p_sleep(t_philo *p)
 	pthread_mutex_lock(&p->s_in->talk_lock);
 	say_status("is sleeping", p->p_id, p->inputs->start_time);
 	pthread_mutex_unlock(&p->s_in->talk_lock);
-	usleep(p->inputs->time_sleep * 1000);
+	ft_usleep(p->inputs->time_sleep);
 }
 
 void	p_think(t_philo *p)

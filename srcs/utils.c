@@ -6,7 +6,7 @@
 /*   By: mvaldes <mvaldes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/06 11:08:36 by mvaldes           #+#    #+#             */
-/*   Updated: 2021/07/13 14:28:55 by mvaldes          ###   ########.fr       */
+/*   Updated: 2021/07/13 14:58:40 by mvaldes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,4 +63,21 @@ void	say_status_nb(char *str, int id, int nb, struct timeval start)
 	ft_putstr(" ");
 	ft_putnbr(nb);
 	ft_putstr("\n");
+}
+
+void	ft_usleep(long int max_time)
+{
+	long int		start_time;
+	long int		pass_time;
+	struct timeval	time;
+
+	gettimeofday(&time, NULL);
+	start_time = from_time_to_ms(time);
+	pass_time = start_time;
+	while ((pass_time - start_time) < max_time)
+	{
+		gettimeofday(&time, NULL);
+		pass_time = from_time_to_ms(time);
+		usleep(max_time / 10);
+	}
 }

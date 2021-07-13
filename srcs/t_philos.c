@@ -6,7 +6,7 @@
 /*   By: mvaldes <mvaldes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/12 11:50:33 by mvaldes           #+#    #+#             */
-/*   Updated: 2021/07/13 14:33:22 by mvaldes          ###   ########.fr       */
+/*   Updated: 2021/07/13 15:21:39 by mvaldes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,9 +40,9 @@ static void	smol_circle_states(t_philo	*p)
 	if (p->alive == 1 && p->plts_eaten < p->plts_max)
 		p_think(p);
 	if (p->inputs->nb_p % 2 != 1 && p->p_id == p->inputs->nb_p)
-		usleep(p->inputs->time_eat * 1000);
+		ft_usleep(p->inputs->time_eat * 2);
 	else
-		usleep(p->inputs->time_eat / 2 * 1000);
+		ft_usleep(p->inputs->time_eat);
 	if (p->alive == 1 && p->plts_eaten < p->plts_max)
 		p_eat(p);
 	if (p->alive == 1 && p->plts_eaten < p->plts_max)

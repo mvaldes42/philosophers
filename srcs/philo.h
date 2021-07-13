@@ -6,7 +6,7 @@
 /*   By: mvaldes <mvaldes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/05 14:42:20 by mvaldes           #+#    #+#             */
-/*   Updated: 2021/07/13 14:10:12 by mvaldes          ###   ########.fr       */
+/*   Updated: 2021/07/13 14:39:53 by mvaldes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,7 @@ void	init_inputs(int argc, char **argv, t_innkeper *inn);
 
 void	*philosopher(void *philosoher);
 void	*are_philo_dead(void *innkeeper);
+void	*am_i_dead(void *innkeeper);
 
 void	p_eat(t_philo *p);
 void	p_sleep(t_philo *p);

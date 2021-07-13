@@ -6,7 +6,7 @@
 /*   By: mvaldes <mvaldes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/12 11:51:41 by mvaldes           #+#    #+#             */
-/*   Updated: 2021/07/13 14:28:00 by mvaldes          ###   ########.fr       */
+/*   Updated: 2021/07/13 15:00:51 by mvaldes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ static void	check_if_death(t_innkeper *inn, int first_time)
 	{
 		if (first_time)
 		{
-			usleep(inn->in_ptr.time_die * 1000);
+			ft_usleep(inn->in_ptr.time_die);
 			first_time = 0;
 		}
 		gettimeofday(&time, NULL);
@@ -58,7 +58,28 @@ void	*are_philo_dead(void *innkeeper)
 	while (inn->no_death)
 	{
 		check_if_death(inn, first_time);
-		usleep(inn->in_ptr.time_die / 2 * 1000);
+		ft_usleep(inn->in_ptr.time_die / 2);
+	}
+	return (NULL);
+}
+
+void	*am_i_dead(void *philosopher)
+{
+	t_philo			*p;
+	struct timeval	time;
+	int				x;
+
+	p = (t_philo *)philosopher;
+	ft_usleep(p->inputs->time_die);
+	gettimeofday(&time, NULL);
+	x = from_time_to_ms(time) - from_time_to_ms(p->lst_meal);
+	if (x >= p->inputs->time_die)
+	{
+		p->alive = 0;
+		pthread_mutex_lock(&p->s_in->talk_lock);
+		say_status_nb("ISSS DEEEEAAAAAAADDD", p->p_id, x, p->inputs->start_time);
+		pthread_mutex_unlock(&p->s_in->talk_lock);
+		exit(EXIT_SUCCESS);
 	}
 	return (NULL);
 }
