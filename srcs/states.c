@@ -6,7 +6,7 @@
 /*   By: mvaldes <mvaldes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/12 11:48:55 by mvaldes           #+#    #+#             */
-/*   Updated: 2021/07/13 14:59:39 by mvaldes          ###   ########.fr       */
+/*   Updated: 2021/07/13 15:29:15 by mvaldes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,20 +15,19 @@
 
 static void	eating_lock(t_philo *p)
 {
-	pthread_mutex_lock(&p->s_in->talk_lock);
-	say_status_nb("take left fork", p->p_id, p->l_frk_id, p->inputs->start_time);
-	say_status_nb("take right fork", p->p_id, p->r_frk_id, p->inputs->start_time);
-	pthread_mutex_unlock(&p->s_in->talk_lock);
 	pthread_mutex_lock(&p->left_lock);
 	pthread_mutex_lock(p->right_lock);
-	// pthread_mutex_lock(&p->s_in->plts_lck[0]);
+	pthread_mutex_lock(&p->s_in->talk_lock);
+	say_status_nb("take left fork", p->p_id, p->l_frk_id, p->in->start_time);
+	say_status_nb("take right fork", p->p_id, p->r_frk_id, p->in->start_time);
+	pthread_mutex_unlock(&p->s_in->talk_lock);
 }
 
 static void	eating_unlock(t_philo *p)
 {
 	pthread_mutex_lock(&p->s_in->talk_lock);
-	say_status_nb("down left fork", p->p_id, p->l_frk_id, p->inputs->start_time);
-	say_status_nb("down right fork", p->p_id, p->r_frk_id, p->inputs->start_time);
+	say_status_nb("down left fork", p->p_id, p->l_frk_id, p->in->start_time);
+	say_status_nb("down right fork", p->p_id, p->r_frk_id, p->in->start_time);
 	pthread_mutex_unlock(&p->s_in->talk_lock);
 	// pthread_mutex_unlock(&p->s_in->plts_lck[0]);
 	pthread_mutex_unlock(&p->left_lock);
@@ -42,7 +41,7 @@ void	p_eat(t_philo *p)
 
 	gettimeofday(&time, NULL);
 	x = from_time_to_ms(time) - from_time_to_ms(p->lst_meal);
-	if (x >= p->inputs->time_die)
+	if (x >= p->in->time_die)
 		p->alive = 0;
 	else
 	{
@@ -51,9 +50,9 @@ void	p_eat(t_philo *p)
 		p->s_in->tot_plts_eaten++;
 		p->plts_eaten++;
 		pthread_mutex_lock(&p->s_in->talk_lock);
-		say_status("is eating", p->p_id, p->inputs->start_time);
+		say_status("is eating", p->p_id, p->in->start_time);
 		pthread_mutex_unlock(&p->s_in->talk_lock);
-		ft_usleep(p->inputs->time_eat);
+		ft_usleep(p->in->time_eat);
 		eating_unlock(p);
 	}
 }
@@ -61,9 +60,9 @@ void	p_eat(t_philo *p)
 void	p_sleep(t_philo *p)
 {
 	pthread_mutex_lock(&p->s_in->talk_lock);
-	say_status("is sleeping", p->p_id, p->inputs->start_time);
+	say_status("is sleeping", p->p_id, p->in->start_time);
 	pthread_mutex_unlock(&p->s_in->talk_lock);
-	ft_usleep(p->inputs->time_sleep);
+	ft_usleep(p->in->time_sleep);
 }
 
 void	p_think(t_philo *p)
@@ -71,7 +70,7 @@ void	p_think(t_philo *p)
 	if (p->alive == 1 && p->plts_eaten < p->plts_max)
 	{
 		pthread_mutex_lock(&p->s_in->talk_lock);
-		say_status("is thinking", p->p_id, p->inputs->start_time);
+		say_status("is thinking", p->p_id, p->in->start_time);
 		pthread_mutex_unlock(&p->s_in->talk_lock);
 	}
 }

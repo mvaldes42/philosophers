@@ -6,7 +6,7 @@
 /*   By: mvaldes <mvaldes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/05 17:37:13 by mvaldes           #+#    #+#             */
-/*   Updated: 2021/07/13 15:01:03 by mvaldes          ###   ########.fr       */
+/*   Updated: 2021/07/13 15:29:45 by mvaldes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ static void	init_threads(t_innkeper *inn)
 	{
 		memset(&inn->p[i], 0, sizeof(inn->p[i]));
 		inn->p[i].p_id = i;
-		inn->p[i].inputs = &inn->in_ptr;
+		inn->p[i].in = &inn->in_ptr;
 		inn->p[i].s_in = &inn->s_in;
 		pthread_mutex_init(&inn->p[i].left_lock, NULL);
 		if (i - 1 == 0)

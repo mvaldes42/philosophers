@@ -6,7 +6,7 @@
 /*   By: mvaldes <mvaldes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/05 14:42:20 by mvaldes           #+#    #+#             */
-/*   Updated: 2021/07/13 14:39:53 by mvaldes          ###   ########.fr       */
+/*   Updated: 2021/07/13 15:29:41 by mvaldes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ typedef struct s_philo
 {
 	int				p_id;
 	pthread_t		t_id;
-	t_inputs		*inputs;
+	t_inputs		*in;
 	t_shared_in		*s_in;
 	int				is_even;
 	int				r_frk_id;

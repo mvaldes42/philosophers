@@ -6,7 +6,7 @@
 /*   By: mvaldes <mvaldes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/12 11:50:33 by mvaldes           #+#    #+#             */
-/*   Updated: 2021/07/13 15:21:39 by mvaldes          ###   ########.fr       */
+/*   Updated: 2021/07/13 15:24:36 by mvaldes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,8 @@ static void	init_philo(t_philo *p)
 	p->r_frk_id = p->p_id - 1;
 	p->l_frk_id = p->p_id;
 	if (p->r_frk_id == 0)
-		p->r_frk_id = p->inputs->nb_p;
-	p->plts_max = p->inputs->plts_p_philo;
+		p->r_frk_id = p->in->nb_p;
+	p->plts_max = p->in->plts_p_philo;
 	p->is_even = p->p_id % 2;
 	p->alive = 1;
 	gettimeofday(&p->lst_meal, NULL);
@@ -39,10 +39,10 @@ static void	smol_circle_states(t_philo	*p)
 {
 	if (p->alive == 1 && p->plts_eaten < p->plts_max)
 		p_think(p);
-	if (p->inputs->nb_p % 2 != 1 && p->p_id == p->inputs->nb_p)
-		ft_usleep(p->inputs->time_eat * 2);
+	if (p->in->nb_p % 2 != 1 && p->p_id == p->in->nb_p)
+		ft_usleep(p->in->time_eat * 2);
 	else
-		ft_usleep(p->inputs->time_eat);
+		ft_usleep(p->in->time_eat);
 	if (p->alive == 1 && p->plts_eaten < p->plts_max)
 		p_eat(p);
 	if (p->alive == 1 && p->plts_eaten < p->plts_max)
@@ -70,7 +70,7 @@ void	*philosopher(void *philosoher)
 	if (p->alive)
 	{
 		pthread_mutex_lock(&p->s_in->talk_lock);
-		say_status("DONE", p->p_id, p->inputs->start_time);
+		say_status("DONE", p->p_id, p->in->start_time);
 		pthread_mutex_unlock(&p->s_in->talk_lock);
 	}
 	return (NULL);
