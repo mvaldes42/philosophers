@@ -6,7 +6,7 @@
 /*   By: mvaldes <mvaldes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/12 11:48:55 by mvaldes           #+#    #+#             */
-/*   Updated: 2021/07/13 15:29:15 by mvaldes          ###   ########.fr       */
+/*   Updated: 2021/07/13 15:35:13 by mvaldes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,6 @@ void	p_eat(t_philo *p)
 	{
 		eating_lock(p);
 		gettimeofday(&p->lst_meal, NULL);
-		p->s_in->tot_plts_eaten++;
 		p->plts_eaten++;
 		pthread_mutex_lock(&p->s_in->talk_lock);
 		say_status("is eating", p->p_id, p->in->start_time);

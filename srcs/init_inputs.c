@@ -6,7 +6,7 @@
 /*   By: mvaldes <mvaldes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/12 11:52:26 by mvaldes           #+#    #+#             */
-/*   Updated: 2021/07/13 14:10:13 by mvaldes          ###   ########.fr       */
+/*   Updated: 2021/07/13 15:35:46 by mvaldes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,5 @@ void	init_inputs(int argc, char **argv, t_innkeper *inn)
 	memset(inputs, 0, sizeof(*inputs));
 	memset(&inn->s_in, 0, sizeof(inn->s_in));
 	inn->p = malloc((inn->in_ptr.nb_p + 1) * sizeof(inn->p));
-	inn->s_in.plts_lck = malloc((floor(inn->in_ptr.nb_p / 2) + 1) \
-	* sizeof(inn->s_in.plts_lck));
 	parse_inputs(argc, argv, inn, inputs);
 }

@@ -6,7 +6,7 @@
 /*   By: mvaldes <mvaldes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/05 14:42:20 by mvaldes           #+#    #+#             */
-/*   Updated: 2021/07/13 15:29:41 by mvaldes          ###   ########.fr       */
+/*   Updated: 2021/07/13 15:58:38 by mvaldes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,9 +31,7 @@ typedef enum e_states
 
 typedef struct s_shared_inputs
 {
-	pthread_mutex_t	*plts_lck;
 	pthread_mutex_t	talk_lock;
-	int				tot_plts_eaten;
 }	t_shared_in;
 
 typedef struct s_inputs
@@ -78,7 +76,6 @@ void	init_inputs(int argc, char **argv, t_innkeper *inn);
 
 void	*philosopher(void *philosoher);
 void	*are_philo_dead(void *innkeeper);
-void	*am_i_dead(void *innkeeper);
 
 void	p_eat(t_philo *p);
 void	p_sleep(t_philo *p);
