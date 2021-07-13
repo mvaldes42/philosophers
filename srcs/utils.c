@@ -6,7 +6,7 @@
 /*   By: mvaldes <mvaldes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/06 11:08:36 by mvaldes           #+#    #+#             */
-/*   Updated: 2021/07/12 16:02:55 by mvaldes          ###   ########.fr       */
+/*   Updated: 2021/07/13 10:25:18 by mvaldes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,16 +34,18 @@ long int	from_time_to_ms(struct timeval what_time)
 	return (ms);
 }
 
-void	talk_2(pthread_mutex_t *lock, char *str, int time, int id)
+void	talk_2(t_philo *p, char *str, struct timeval time, int id)
 {
-	pthread_mutex_lock(lock);
-	printf(str, time, id);
-	pthread_mutex_unlock(lock);
+	pthread_mutex_lock(&p->s_in->talk_lock);
+	printf(str, \
+	from_time_to_ms(time) - from_time_to_ms(p->inputs->sim_start_time), id);
+	pthread_mutex_unlock(&p->s_in->talk_lock);
 }
 
-void	talk_3(pthread_mutex_t *lock, char *str, int time, int id, int nb)
+void	talk_3(t_philo *p, char *str, struct timeval time, int id, int nb)
 {
-	pthread_mutex_lock(lock);
-	printf(str, time, id, nb);
-	pthread_mutex_unlock(lock);
+	pthread_mutex_lock(&p->s_in->talk_lock);
+	printf(str, \
+	from_time_to_ms(time) - from_time_to_ms(p->inputs->sim_start_time), id, nb);
+	pthread_mutex_unlock(&p->s_in->talk_lock);
 }

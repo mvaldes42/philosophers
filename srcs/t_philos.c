@@ -6,7 +6,7 @@
 /*   By: mvaldes <mvaldes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/12 11:50:33 by mvaldes           #+#    #+#             */
-/*   Updated: 2021/07/12 15:23:29 by mvaldes          ###   ########.fr       */
+/*   Updated: 2021/07/13 10:14:40 by mvaldes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ void	*philosopher(void *philosoher)
 		p->alive == 1)
 			circle_states(p);
 	}
-	if (p->alive)
-		printf("#%d DONE\n", p->p_id);
+	// if (p->alive)
+		// printf("#%d DONE\n", p->p_id);
 	return (NULL);
 }
