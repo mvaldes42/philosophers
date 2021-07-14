@@ -6,7 +6,7 @@
 /*   By: mvaldes <mvaldes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/12 11:50:33 by mvaldes           #+#    #+#             */
-/*   Updated: 2021/07/14 14:41:15 by mvaldes          ###   ########.fr       */
+/*   Updated: 2021/07/14 16:40:23 by mvaldes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,32 +24,42 @@ static void	init_philo(t_philo *p)
 	p->alive = 1;
 	gettimeofday(&p->lst_meal, NULL);
 	pthread_mutex_init(&p->plts_lock, NULL);
+	pthread_mutex_init(&p->alive_lock, NULL);
 }
 
-static void	circle_states(t_philo	*p)
+static int	circle_states(t_philo	*p)
 {
 	if (p->alive == 1 && p->plts_eaten < p->plts_max)
-		p_eat(p);
+		if (did_p_died(p->s_in) || !p_eat(p))
+			return (0);
 	if (p->alive == 1 && p->plts_eaten < p->plts_max)
-		p_sleep(p);
+		if (did_p_died(p->s_in) || !p_sleep(p))
+			return (0);
 	if (p->alive == 1 && p->plts_eaten < p->plts_max)
-		p_think(p);
+		if (did_p_died(p->s_in) || !p_think(p))
+			return (0);
+	return (1);
 }
 
-static void	smol_circle_states(t_philo	*p)
+static int	smol_circle_states(t_philo	*p)
 {
 	if (p->alive == 1 && p->plts_eaten < p->plts_max)
-		p_think(p);
+		if (did_p_died(p->s_in) || !p_think(p))
+			return (0);
 	if (p->p_id == p->in->nb_p)
 		ft_usleep(p->in->time_eat * 2);
 	else
 		ft_usleep(p->in->time_eat);
 	if (p->alive == 1 && p->plts_eaten < p->plts_max)
-		p_eat(p);
+		if (did_p_died(p->s_in) || !p_eat(p))
+			return (0);
 	if (p->alive == 1 && p->plts_eaten < p->plts_max)
-		p_sleep(p);
+		if (did_p_died(p->s_in) || !p_sleep(p))
+			return (0);
 	if (p->alive == 1 && p->plts_eaten < p->plts_max)
-		p_think(p);
+		if (did_p_died(p->s_in) || !p_think(p))
+			return (0);
+	return (1);
 }
 
 void	*philosopher(void *philosoher)
@@ -60,13 +70,18 @@ void	*philosopher(void *philosoher)
 	init_philo(p);
 	while (p->alive == 1 && p->plts_eaten < p->plts_max)
 	{
-		if (p->plts_eaten == 0 && p->is_even == 0)
-			circle_states(p);
+		if ((p->plts_eaten == 0 && p->is_even == 0) || \
+		(p->plts_eaten != 0 && p->plts_eaten < p->plts_max && \
+		p->alive == 1))
+		{
+			if (!circle_states(p))
+				break ;
+		}
 		else if (p->plts_eaten == 0 && p->is_even == 1)
-			smol_circle_states(p);
-		else if (p->plts_eaten != 0 && p->plts_eaten < p->plts_max && \
-		p->alive == 1)
-			circle_states(p);
+		{
+			if (!smol_circle_states(p))
+				break ;
+		}
 	}
 	if (p->alive)
 	{

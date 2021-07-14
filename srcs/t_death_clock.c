@@ -6,7 +6,7 @@
 /*   By: mvaldes <mvaldes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/12 11:51:41 by mvaldes           #+#    #+#             */
-/*   Updated: 2021/07/14 14:51:17 by mvaldes          ###   ########.fr       */
+/*   Updated: 2021/07/14 16:43:02 by mvaldes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,40 +16,46 @@
 static void	death_scenario(t_innkeper *inn, int i, long int x)
 {
 	pthread_mutex_lock(&inn->s_in.talk_lock);
-	printf("death clock\n");
 	say_death_status(inn->p[i].p_id, inn->in_ptr.start_time, \
 	inn->p[i].lst_meal);
 	pthread_mutex_unlock(&inn->s_in.talk_lock);
 	inn->p[i].alive = 0;
 	inn->no_death = 0;
-	exit_success(inn);
+	pthread_mutex_lock(&inn->s_in.someone_died_lock);
+	inn->s_in.someone_died = 1;
+	pthread_mutex_unlock(&inn->s_in.someone_died_lock);
+	exit_failure(inn);
 }
 
-static void	check_if_death(t_innkeper *inn, int first_time)
+static int	check_if_death(t_innkeper *inn, int first_time)
 {
 	long int		x;
 	struct timeval	time;
 	int				i;
 	int				plts_eat;
+	int				p_alive;
 
 	i = 1;
 	while (i <= inn->in_ptr.nb_p && inn->no_death)
 	{
 		pthread_mutex_lock(&inn->p[i].plts_lock);
+		pthread_mutex_lock(&inn->p[i].alive_lock);
 		plts_eat = inn->p[i].plts_eaten;
+		p_alive = inn->p[i].alive;
 		pthread_mutex_unlock(&inn->p[i].plts_lock);
-		if (first_time)
-		{
-			ft_usleep(5);
-			first_time = 0;
-		}
+		pthread_mutex_unlock(&inn->p[i].alive_lock);
 		gettimeofday(&time, NULL);
 		x = from_time_to_ms(time) - from_time_to_ms(inn->p[i].lst_meal);
 		if (plts_eat == inn->in_ptr.plts_p_philo || x <= inn->in_ptr.time_die)
 			i++;
-		if (plts_eat != inn->in_ptr.plts_p_philo && x > inn->in_ptr.time_die)
+		if ((plts_eat != inn->in_ptr.plts_p_philo && x > inn->in_ptr.time_die) \
+		|| (p_alive == 0))
+		{
 			death_scenario(inn, i, x);
+			return (0);
+		}
 	}
+	return (1);
 }
 
 void	*are_philo_dead(void *innkeeper)
@@ -62,7 +68,13 @@ void	*are_philo_dead(void *innkeeper)
 	first_time = 1;
 	while (inn->no_death)
 	{
-		check_if_death(inn, first_time);
+		if (first_time)
+		{
+			ft_usleep(inn->in_ptr.time_eat);
+			first_time = 0;
+		}
+		if (!check_if_death(inn, first_time))
+			break ;
 		ft_usleep(5);
 	}
 	return (NULL);

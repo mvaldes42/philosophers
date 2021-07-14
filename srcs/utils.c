@@ -6,17 +6,24 @@
 /*   By: mvaldes <mvaldes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/06 11:08:36 by mvaldes           #+#    #+#             */
-/*   Updated: 2021/07/14 13:50:37 by mvaldes          ###   ########.fr       */
+/*   Updated: 2021/07/14 16:42:20 by mvaldes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 #include "utils.h"
 
-void	exit_failure(t_innkeper *innkeeper)
+void	exit_failure(t_innkeper *inn)
 {
-	if (innkeeper->p)
-		free(innkeeper->p);
+	if (inn->p)
+		free(inn->p);
+	int	i;
+	i = 1;
+	while (i <= inn->in_ptr.nb_p)
+	{
+		pthread_join(inn->p[i].t_id, NULL);
+		i++;
+	}
 	exit(EXIT_FAILURE);
 }
 
@@ -74,7 +81,7 @@ void	say_death_status(int id, struct timeval start, struct timeval lst_eat)
 	ft_putstr("  >>");
 	ft_putstr(" ");
 	ft_putnbr(id);
-	ft_putstr(" is dead ");
+	ft_putstr(" /!\\ IS DEAD /!\\ ");
 	ft_putnbr(from_time_to_ms(time) - from_time_to_ms(lst_eat));
 	ft_putstr("\n");
 }
@@ -94,4 +101,16 @@ void	ft_usleep(long int max_time)
 		pass_time = from_time_to_ms(time);
 		usleep(max_time / 10);
 	}
+}
+
+int	did_p_died(t_shared_in *s_in)
+{
+	int	someone_is_dead;
+
+	pthread_mutex_lock(&s_in->someone_died_lock);
+	someone_is_dead = s_in->someone_died;
+	pthread_mutex_unlock(&s_in->someone_died_lock);
+	if (someone_is_dead == 1)
+		return (1);
+	return (0);
 }

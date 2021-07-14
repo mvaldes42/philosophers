@@ -6,7 +6,7 @@
 /*   By: mvaldes <mvaldes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/05 17:37:13 by mvaldes           #+#    #+#             */
-/*   Updated: 2021/07/14 13:24:43 by mvaldes          ###   ########.fr       */
+/*   Updated: 2021/07/14 15:56:00 by mvaldes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,8 @@ static void	destroy_mutexts(t_innkeper *inn)
 	while (i <= inn->in_ptr.nb_p)
 	{
 		pthread_mutex_destroy(&inn->p[i].left_lock);
+		pthread_mutex_destroy(&inn->p[i].plts_lock);
+		pthread_mutex_destroy(&inn->p[i].alive_lock);
 		i++;
 	}
 	pthread_mutex_destroy(&inn->s_in.talk_lock);
