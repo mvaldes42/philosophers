@@ -6,7 +6,7 @@
 /*   By: mvaldes <mvaldes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/12 11:52:26 by mvaldes           #+#    #+#             */
-/*   Updated: 2021/07/14 15:55:49 by mvaldes          ###   ########.fr       */
+/*   Updated: 2021/07/14 18:02:16 by mvaldes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ static void	parse_inputs(int argc, char **argv, t_innkeper *inn, t_inputs *in)
 	if (argc == 6)
 		in->plts_p_philo = atoi(argv[5]);
 	else
-		in->plts_p_philo = -1;
+		in->plts_p_philo = __LONG_LONG_MAX__;
 	in->time_thk = in->time_eat;
 	inn->in_ptr.plts_tot = inn->in_ptr.plts_p_philo * inn->in_ptr.nb_p;
 }

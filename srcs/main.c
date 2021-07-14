@@ -6,7 +6,7 @@
 /*   By: mvaldes <mvaldes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/05 17:37:13 by mvaldes           #+#    #+#             */
-/*   Updated: 2021/07/14 15:56:00 by mvaldes          ###   ########.fr       */
+/*   Updated: 2021/07/14 18:01:27 by mvaldes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
 
 static void	create_threads(t_innkeper *inn)
 {
-	int	i;
+	long long	i;
 
 	i = 1;
 	pthread_create(&inn->death_clock, NULL, are_philo_dead, (void *)inn);

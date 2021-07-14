@@ -6,7 +6,7 @@
 /*   By: mvaldes <mvaldes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/05 14:42:20 by mvaldes           #+#    #+#             */
-/*   Updated: 2021/07/14 16:35:17 by mvaldes          ###   ########.fr       */
+/*   Updated: 2021/07/14 18:01:04 by mvaldes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,8 @@ typedef struct s_inputs
 	int				time_eat;
 	int				time_sleep;
 	int				time_thk;
-	int				plts_p_philo;
-	int				plts_tot;
+	long long		plts_p_philo;
+	long long		plts_tot;
 	struct timeval	start_time;
 }	t_inputs;
 
@@ -61,8 +61,8 @@ typedef struct s_philo
 	pthread_mutex_t	*right_lock;
 	struct timeval	lst_meal;
 	pthread_mutex_t	plts_lock;
-	int				plts_eaten;
-	int				plts_max;
+	long long		plts_eaten;
+	long long		plts_max;
 	pthread_mutex_t	alive_lock;
 	int				alive;
 }	t_philo;
