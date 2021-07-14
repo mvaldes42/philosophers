@@ -6,7 +6,7 @@
 /*   By: mvaldes <mvaldes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/12 11:51:41 by mvaldes           #+#    #+#             */
-/*   Updated: 2021/07/14 16:43:02 by mvaldes          ###   ########.fr       */
+/*   Updated: 2021/07/14 16:57:32 by mvaldes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,13 @@ static void	death_scenario(t_innkeper *inn, int i, long int x)
 	say_death_status(inn->p[i].p_id, inn->in_ptr.start_time, \
 	inn->p[i].lst_meal);
 	pthread_mutex_unlock(&inn->s_in.talk_lock);
+	pthread_mutex_lock(&inn->p[i].alive_lock);
 	inn->p[i].alive = 0;
+	pthread_mutex_unlock(&inn->p[i].alive_lock);
 	inn->no_death = 0;
 	pthread_mutex_lock(&inn->s_in.someone_died_lock);
 	inn->s_in.someone_died = 1;
 	pthread_mutex_unlock(&inn->s_in.someone_died_lock);
-	exit_failure(inn);
 }
 
 static int	check_if_death(t_innkeper *inn, int first_time)

@@ -6,7 +6,7 @@
 /*   By: mvaldes <mvaldes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/06 11:08:36 by mvaldes           #+#    #+#             */
-/*   Updated: 2021/07/14 16:42:20 by mvaldes          ###   ########.fr       */
+/*   Updated: 2021/07/14 17:18:40 by mvaldes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,13 +17,6 @@ void	exit_failure(t_innkeper *inn)
 {
 	if (inn->p)
 		free(inn->p);
-	int	i;
-	i = 1;
-	while (i <= inn->in_ptr.nb_p)
-	{
-		pthread_join(inn->p[i].t_id, NULL);
-		i++;
-	}
 	exit(EXIT_FAILURE);
 }
 
@@ -103,7 +96,7 @@ void	ft_usleep(long int max_time)
 	}
 }
 
-int	did_p_died(t_shared_in *s_in)
+int	did_else_died(t_shared_in *s_in)
 {
 	int	someone_is_dead;
 
@@ -113,4 +106,16 @@ int	did_p_died(t_shared_in *s_in)
 	if (someone_is_dead == 1)
 		return (1);
 	return (0);
+}
+
+int	did_i_died(t_philo *p)
+{
+	int	i_am_alive;
+
+	pthread_mutex_lock(&p->alive_lock);
+	i_am_alive = p->alive;
+	pthread_mutex_unlock(&p->alive_lock);
+	if (i_am_alive == 1)
+		return (0);
+	return (1);
 }
