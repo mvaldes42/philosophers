@@ -6,7 +6,7 @@
 /*   By: mvaldes <mvaldes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/12 11:51:41 by mvaldes           #+#    #+#             */
-/*   Updated: 2021/07/14 16:57:32 by mvaldes          ###   ########.fr       */
+/*   Updated: 2021/07/14 18:48:52 by mvaldes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,7 @@
 
 static void	death_scenario(t_innkeper *inn, int i, long int x)
 {
-	pthread_mutex_lock(&inn->s_in.talk_lock);
-	say_death_status(inn->p[i].p_id, inn->in_ptr.start_time, \
-	inn->p[i].lst_meal);
-	pthread_mutex_unlock(&inn->s_in.talk_lock);
+	death_status_out(&inn->p[i]);
 	pthread_mutex_lock(&inn->p[i].alive_lock);
 	inn->p[i].alive = 0;
 	pthread_mutex_unlock(&inn->p[i].alive_lock);

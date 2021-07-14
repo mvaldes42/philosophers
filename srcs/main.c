@@ -6,7 +6,7 @@
 /*   By: mvaldes <mvaldes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/05 17:37:13 by mvaldes           #+#    #+#             */
-/*   Updated: 2021/07/14 18:01:27 by mvaldes          ###   ########.fr       */
+/*   Updated: 2021/07/14 18:29:04 by mvaldes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,5 +81,5 @@ int	main(int argc, char **argv)
 	close_threads(&inn);
 	destroy_mutexts(&inn);
 	exit_success(&inn);
-	exit(EXIT_SUCCESS);
+	return (0);
 }

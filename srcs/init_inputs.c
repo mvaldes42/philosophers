@@ -6,12 +6,19 @@
 /*   By: mvaldes <mvaldes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/12 11:52:26 by mvaldes           #+#    #+#             */
-/*   Updated: 2021/07/14 18:26:13 by mvaldes          ###   ########.fr       */
+/*   Updated: 2021/07/14 18:30:38 by mvaldes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 #include "utils.h"
+
+static void	exit_failure(t_innkeper *inn)
+{
+	if (inn->p)
+		free(inn->p);
+	exit(EXIT_FAILURE);
+}
 
 static void	parse_inputs(int argc, char **argv, t_innkeper *inn, t_inputs *in)
 {

@@ -6,94 +6,37 @@
 /*   By: mvaldes <mvaldes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/06 11:08:36 by mvaldes           #+#    #+#             */
-/*   Updated: 2021/07/14 17:18:40 by mvaldes          ###   ########.fr       */
+/*   Updated: 2021/07/14 19:03:00 by mvaldes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 #include "utils.h"
 
-void	exit_failure(t_innkeper *inn)
-{
-	if (inn->p)
-		free(inn->p);
-	exit(EXIT_FAILURE);
-}
-
-void	exit_success(t_innkeper *innkeeper)
-{
-	if (innkeeper->p)
-		free(innkeeper->p);
-	exit(EXIT_SUCCESS);
-}
-
-long int	from_time_to_ms(struct timeval what_time)
-{
-	long int	ms;
-
-	ms = what_time.tv_sec * 1000 + what_time.tv_usec / 1000;
-	return (ms);
-}
-
-void	say_status(char *str, int id, struct timeval start)
+void	regular_status_out(t_philo *p, char *str)
 {
 	struct timeval	time;
+	int				x;
 
+	pthread_mutex_lock(&p->s_in->talk_lock);
 	gettimeofday(&time, NULL);
-	ft_putnbr(from_time_to_ms(time) - from_time_to_ms(start));
-	ft_putstr("  >>");
-	ft_putstr(" ");
-	ft_putnbr(id);
-	ft_putstr(" ");
-	ft_putstr(str);
-	ft_putstr("\n");
+	x = from_time_to_ms(time) - from_time_to_ms(p->in->start_time);
+	printf("%-4d >> %d %s\n", x, p->p_id, str);
+	pthread_mutex_unlock(&p->s_in->talk_lock);
 }
 
-void	say_status_nb(char *str, int id, int nb, struct timeval start)
+void	death_status_out(t_philo *p)
 {
 	struct timeval	time;
+	int				x;
+	int				last_meal;
 
+	pthread_mutex_lock(&p->s_in->talk_lock);
 	gettimeofday(&time, NULL);
-	ft_putnbr(from_time_to_ms(time) - from_time_to_ms(start));
-	ft_putstr("  >>");
-	ft_putstr(" ");
-	ft_putnbr(id);
-	ft_putstr(" ");
-	ft_putstr(str);
-	ft_putstr(" ");
-	ft_putnbr(nb);
-	ft_putstr("\n");
-}
-
-void	say_death_status(int id, struct timeval start, struct timeval lst_eat)
-{
-	struct timeval	time;
-
-	gettimeofday(&time, NULL);
-	ft_putnbr(from_time_to_ms(time) - from_time_to_ms(start));
-	ft_putstr("  >>");
-	ft_putstr(" ");
-	ft_putnbr(id);
-	ft_putstr(" /!\\ IS DEAD /!\\ ");
-	ft_putnbr(from_time_to_ms(time) - from_time_to_ms(lst_eat));
-	ft_putstr("\n");
-}
-
-void	ft_usleep(long int max_time)
-{
-	long int		start_time;
-	long int		pass_time;
-	struct timeval	time;
-
-	gettimeofday(&time, NULL);
-	start_time = from_time_to_ms(time);
-	pass_time = start_time;
-	while ((pass_time - start_time) < max_time)
-	{
-		gettimeofday(&time, NULL);
-		pass_time = from_time_to_ms(time);
-		usleep(max_time / 10);
-	}
+	last_meal = from_time_to_ms(time) - from_time_to_ms(p->lst_meal);
+	x = from_time_to_ms(time) - from_time_to_ms(p->in->start_time);
+	printf("%-4d >> %d is dead after %dms\n", x, p->p_id, last_meal);
+	pthread_mutex_unlock(&p->s_in->talk_lock);
 }
 
 int	did_else_died(t_shared_in *s_in)

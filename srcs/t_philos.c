@@ -6,7 +6,7 @@
 /*   By: mvaldes <mvaldes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/12 11:50:33 by mvaldes           #+#    #+#             */
-/*   Updated: 2021/07/14 17:47:42 by mvaldes          ###   ########.fr       */
+/*   Updated: 2021/07/14 18:57:23 by mvaldes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,8 +89,7 @@ void	*philosopher(void *philosoher)
 				break ;
 		}
 	}
-	pthread_mutex_lock(&p->s_in->talk_lock);
-	say_status("DONE", p->p_id, p->in->start_time);
-	pthread_mutex_unlock(&p->s_in->talk_lock);
+	if (!did_i_died(p))
+		regular_status_out(p, "is out");
 	return (NULL);
 }

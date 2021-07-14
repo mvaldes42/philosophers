@@ -6,42 +6,39 @@
 /*   By: mvaldes <mvaldes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/13 12:31:31 by mvaldes           #+#    #+#             */
-/*   Updated: 2021/07/13 12:39:16 by mvaldes          ###   ########.fr       */
+/*   Updated: 2021/07/14 18:52:27 by mvaldes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "utils.h"
 
-void	ft_putchar_fd(char c)
+void	exit_success(t_innkeper *innkeeper)
 {
-	write(1, (unsigned char *)(&c), 1);
+	if (innkeeper->p)
+		free(innkeeper->p);
 }
 
-void	ft_putstr(char *s)
+long int	from_time_to_ms(struct timeval what_time)
 {
-	int	i;
+	long int	ms;
 
-	i = 0;
-	if (!s)
-		return ;
-	while (s[i])
-	{
-		ft_putchar_fd(s[i]);
-		i++;
-	}
+	ms = what_time.tv_sec * 1000 + what_time.tv_usec / 1000;
+	return (ms);
 }
 
-void	ft_putnbr(int n)
+void	ft_usleep(long int max_time)
 {
-	long	n_long;
+	long int		start_time;
+	long int		pass_time;
+	struct timeval	time;
 
-	n_long = n;
-	if (n_long < 0)
+	gettimeofday(&time, NULL);
+	start_time = from_time_to_ms(time);
+	pass_time = start_time;
+	while ((pass_time - start_time) < max_time)
 	{
-		ft_putchar_fd('-');
-		n_long = n_long * -1;
+		gettimeofday(&time, NULL);
+		pass_time = from_time_to_ms(time);
+		usleep(max_time / 10);
 	}
-	if (n_long >= 10)
-		ft_putnbr(n_long / 10);
-	ft_putchar_fd(n_long % 10 + '0');
 }
