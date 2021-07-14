@@ -6,7 +6,7 @@
 /*   By: mvaldes <mvaldes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/12 11:50:33 by mvaldes           #+#    #+#             */
-/*   Updated: 2021/07/13 15:24:36 by mvaldes          ###   ########.fr       */
+/*   Updated: 2021/07/14 14:41:15 by mvaldes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ static void	init_philo(t_philo *p)
 	p->is_even = p->p_id % 2;
 	p->alive = 1;
 	gettimeofday(&p->lst_meal, NULL);
+	pthread_mutex_init(&p->plts_lock, NULL);
 }
 
 static void	circle_states(t_philo	*p)
@@ -39,7 +40,7 @@ static void	smol_circle_states(t_philo	*p)
 {
 	if (p->alive == 1 && p->plts_eaten < p->plts_max)
 		p_think(p);
-	if (p->in->nb_p % 2 != 1 && p->p_id == p->in->nb_p)
+	if (p->p_id == p->in->nb_p)
 		ft_usleep(p->in->time_eat * 2);
 	else
 		ft_usleep(p->in->time_eat);

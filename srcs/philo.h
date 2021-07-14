@@ -6,7 +6,7 @@
 /*   By: mvaldes <mvaldes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/05 14:42:20 by mvaldes           #+#    #+#             */
-/*   Updated: 2021/07/13 15:58:38 by mvaldes          ###   ########.fr       */
+/*   Updated: 2021/07/14 13:07:39 by mvaldes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,7 @@ typedef struct s_philo
 	pthread_mutex_t	left_lock;
 	pthread_mutex_t	*right_lock;
 	struct timeval	lst_meal;
+	pthread_mutex_t	plts_lock;
 	int				plts_eaten;
 	int				plts_max;
 	bool			alive;
