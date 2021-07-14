@@ -6,7 +6,7 @@
 /*   By: mvaldes <mvaldes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/12 11:48:55 by mvaldes           #+#    #+#             */
-/*   Updated: 2021/07/14 17:26:48 by mvaldes          ###   ########.fr       */
+/*   Updated: 2021/07/14 17:45:51 by mvaldes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static void	eating_lock(t_philo *p)
 {
 	pthread_mutex_lock(&p->left_lock);
 	pthread_mutex_lock(p->right_lock);
-	if (did_else_died(p->s_in) && !did_i_died(p))
+	if (!did_else_died(p->s_in) && !did_i_died(p))
 	{
 		pthread_mutex_lock(&p->s_in->talk_lock);
 		say_status("take forks", p->p_id, p->in->start_time);
@@ -32,7 +32,7 @@ static void	eating_lock(t_philo *p)
 
 static void	eating_unlock(t_philo *p)
 {
-	if (did_else_died(p->s_in) && !did_i_died(p))
+	if (!did_else_died(p->s_in) && !did_i_died(p))
 	{
 		pthread_mutex_lock(&p->s_in->talk_lock);
 		say_status("down forks", p->p_id, p->in->start_time);
@@ -58,10 +58,10 @@ int	p_eat(t_philo *p)
 		pthread_mutex_unlock(&p->alive_lock);
 		return (0);
 	}
-	else if (did_else_died(p->s_in) && !did_i_died(p))
+	else if (!did_else_died(p->s_in) && !did_i_died(p))
 	{
 		eating_lock(p);
-		if (did_else_died(p->s_in) && !did_i_died(p))
+		if (!did_else_died(p->s_in) && !did_i_died(p))
 		{
 			gettimeofday(&p->lst_meal, NULL);
 			pthread_mutex_lock(&p->plts_lock);
