@@ -6,7 +6,7 @@
 /*   By: mvaldes <mvaldes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/12 11:48:55 by mvaldes           #+#    #+#             */
-/*   Updated: 2021/07/14 19:03:42 by mvaldes          ###   ########.fr       */
+/*   Updated: 2021/07/15 16:18:07 by mvaldes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,12 +36,7 @@ static void	eating_unlock(t_philo *p)
 
 int	p_eat(t_philo *p)
 {
-	int				x;
-	struct timeval	time;
-
-	gettimeofday(&time, NULL);
-	x = from_time_to_ms(time) - from_time_to_ms(p->lst_meal);
-	if (x > p->in->time_die)
+	if (time_diff_ms(p->lst_meal) > p->in->time_die)
 	{
 		pthread_mutex_lock(&p->alive_lock);
 		p->alive = 0;
@@ -58,7 +53,7 @@ int	p_eat(t_philo *p)
 			p->plts_eaten++;
 			pthread_mutex_unlock(&p->plts_lock);
 			regular_status_out(p, "is eating");
-			ft_usleep(p->in->time_eat);
+			ft_usleep_states(p->in->time_eat, p);
 		}
 		eating_unlock(p);
 	}
@@ -68,18 +63,13 @@ int	p_eat(t_philo *p)
 int	p_sleep(t_philo *p)
 {
 	regular_status_out(p, "is sleeping");
-	ft_usleep(p->in->time_sleep);
+	ft_usleep_states(p->in->time_sleep, p);
 	return (1);
 }
 
 int	p_think(t_philo *p)
 {
-	struct timeval	time;
-	int				x;
-
-	gettimeofday(&time, NULL);
-	x = from_time_to_ms(time) - from_time_to_ms(p->lst_meal);
-	if (x > p->in->time_die)
+	if (time_diff_ms(p->lst_meal) > p->in->time_die)
 	{
 		pthread_mutex_lock(&p->alive_lock);
 		p->alive = 0;

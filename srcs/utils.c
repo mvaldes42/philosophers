@@ -6,7 +6,7 @@
 /*   By: mvaldes <mvaldes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/06 11:08:36 by mvaldes           #+#    #+#             */
-/*   Updated: 2021/07/14 19:03:00 by mvaldes          ###   ########.fr       */
+/*   Updated: 2021/07/15 14:56:26 by mvaldes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,27 +15,23 @@
 
 void	regular_status_out(t_philo *p, char *str)
 {
-	struct timeval	time;
 	int				x;
 
 	pthread_mutex_lock(&p->s_in->talk_lock);
-	gettimeofday(&time, NULL);
-	x = from_time_to_ms(time) - from_time_to_ms(p->in->start_time);
-	printf("%-4d >> %d %s\n", x, p->p_id, str);
+	x = time_diff_ms(p->in->start_time);
+	printf("%4d -> %d %s\n", x, p->p_id, str);
 	pthread_mutex_unlock(&p->s_in->talk_lock);
 }
 
 void	death_status_out(t_philo *p)
 {
-	struct timeval	time;
 	int				x;
 	int				last_meal;
 
 	pthread_mutex_lock(&p->s_in->talk_lock);
-	gettimeofday(&time, NULL);
-	last_meal = from_time_to_ms(time) - from_time_to_ms(p->lst_meal);
-	x = from_time_to_ms(time) - from_time_to_ms(p->in->start_time);
-	printf("%-4d >> %d is dead after %dms\n", x, p->p_id, last_meal);
+	last_meal = time_diff_ms(p->lst_meal);
+	x = time_diff_ms(p->in->start_time);
+	printf("%4d -> %d is dead after %dms\n", x, p->p_id, last_meal);
 	pthread_mutex_unlock(&p->s_in->talk_lock);
 }
 
@@ -61,4 +57,12 @@ int	did_i_died(t_philo *p)
 	if (i_am_alive == 1)
 		return (0);
 	return (1);
+}
+
+long int	time_diff_ms(struct timeval	time_compare)
+{
+	struct timeval	current_time;
+
+	gettimeofday(&current_time, NULL);
+	return (from_time_to_ms(current_time) - from_time_to_ms(time_compare));
 }

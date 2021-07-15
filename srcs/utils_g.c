@@ -6,7 +6,7 @@
 /*   By: mvaldes <mvaldes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/13 12:31:31 by mvaldes           #+#    #+#             */
-/*   Updated: 2021/07/14 18:52:27 by mvaldes          ###   ########.fr       */
+/*   Updated: 2021/07/15 16:24:34 by mvaldes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,16 +29,34 @@ long int	from_time_to_ms(struct timeval what_time)
 void	ft_usleep(long int max_time)
 {
 	long int		start_time;
-	long int		pass_time;
+	long int		current_time;
 	struct timeval	time;
 
 	gettimeofday(&time, NULL);
 	start_time = from_time_to_ms(time);
-	pass_time = start_time;
-	while ((pass_time - start_time) < max_time)
+	current_time = start_time;
+	while ((current_time - start_time) < max_time)
 	{
 		gettimeofday(&time, NULL);
-		pass_time = from_time_to_ms(time);
+		current_time = from_time_to_ms(time);
 		usleep(max_time / 10);
+	}
+}
+
+void	ft_usleep_states(long int max_time, t_philo *p)
+{
+	long int		start_time;
+	long int		current_time;
+	struct timeval	time;
+
+	gettimeofday(&time, NULL);
+	start_time = from_time_to_ms(time);
+	current_time = start_time;
+	while (((current_time - start_time) < max_time) && \
+	(!did_else_died(p->s_in) && !did_i_died(p)))
+	{
+		gettimeofday(&time, NULL);
+		current_time = from_time_to_ms(time);
+		usleep(10);
 	}
 }

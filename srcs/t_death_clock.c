@@ -6,7 +6,7 @@
 /*   By: mvaldes <mvaldes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/12 11:51:41 by mvaldes           #+#    #+#             */
-/*   Updated: 2021/07/14 18:48:52 by mvaldes          ###   ########.fr       */
+/*   Updated: 2021/07/15 16:09:02 by mvaldes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ static void	death_scenario(t_innkeper *inn, int i, long int x)
 static int	check_if_death(t_innkeper *inn, int first_time)
 {
 	long int		x;
-	struct timeval	time;
 	int				i;
 	int				plts_eat;
 	int				p_alive;
@@ -42,8 +41,7 @@ static int	check_if_death(t_innkeper *inn, int first_time)
 		p_alive = inn->p[i].alive;
 		pthread_mutex_unlock(&inn->p[i].plts_lock);
 		pthread_mutex_unlock(&inn->p[i].alive_lock);
-		gettimeofday(&time, NULL);
-		x = from_time_to_ms(time) - from_time_to_ms(inn->p[i].lst_meal);
+		x = time_diff_ms(inn->p[i].lst_meal);
 		if (plts_eat == inn->in_ptr.plts_p_philo || x <= inn->in_ptr.time_die)
 			i++;
 		if ((plts_eat != inn->in_ptr.plts_p_philo && x > inn->in_ptr.time_die) \
@@ -68,7 +66,7 @@ void	*are_philo_dead(void *innkeeper)
 	{
 		if (first_time)
 		{
-			ft_usleep(inn->in_ptr.time_eat);
+			ft_usleep(inn->in_ptr.time_die);
 			first_time = 0;
 		}
 		if (!check_if_death(inn, first_time))

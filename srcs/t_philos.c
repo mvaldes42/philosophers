@@ -6,7 +6,7 @@
 /*   By: mvaldes <mvaldes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/12 11:50:33 by mvaldes           #+#    #+#             */
-/*   Updated: 2021/07/14 18:57:23 by mvaldes          ###   ########.fr       */
+/*   Updated: 2021/07/15 16:20:48 by mvaldes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,9 +49,9 @@ static int	smol_circle_states(t_philo	*p)
 		if (did_else_died(p->s_in) || !p_think(p))
 			return (0);
 	if (p->p_id == p->in->nb_p)
-		ft_usleep(p->in->time_eat * 2);
+		ft_usleep_states(p->in->time_eat * 2, p);
 	else
-		ft_usleep(p->in->time_eat);
+		ft_usleep_states(p->in->time_eat, p);
 	if (did_i_died(p))
 		return (0);
 	if (!did_i_died(p) && p->plts_eaten < p->plts_max)
@@ -82,7 +82,7 @@ void	*philosopher(void *philosoher)
 				break ;
 		}
 		else if (p->in->nb_p <= 1)
-			ft_usleep(p->in->time_die);
+			ft_usleep_states(p->in->time_die, p);
 		else if (p->plts_eaten == 0 && p->is_even == 1)
 		{
 			if (!smol_circle_states(p))
