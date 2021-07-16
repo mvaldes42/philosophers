@@ -6,7 +6,7 @@
 /*   By: mvaldes <mvaldes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/12 11:52:26 by mvaldes           #+#    #+#             */
-/*   Updated: 2021/07/16 16:50:22 by mvaldes          ###   ########.fr       */
+/*   Updated: 2021/07/16 18:16:14 by mvaldes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ static void	parse_inputs(int argc, char **argv, t_innkeper *inn, t_inputs *in)
 void	init_inputs(int argc, char **argv, t_innkeper *inn)
 {
 	t_inputs	*inputs;
+	int			i;
 
 	if (argc < 4)
 		exit_failure(inn);
@@ -58,4 +59,10 @@ void	init_inputs(int argc, char **argv, t_innkeper *inn)
 	memset(&inn->s_in, 0, sizeof(inn->s_in));
 	parse_inputs(argc, argv, inn, inputs);
 	inn->p = malloc(inn->in_ptr.nb_p * sizeof(t_philo));
+	i = 0;
+	while (i < inn->in_ptr.nb_p)
+	{
+		memset(&inn->p[i], 0, sizeof(t_philo));
+		i++;
+	}
 }
