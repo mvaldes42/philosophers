@@ -6,7 +6,7 @@
 /*   By: mvaldes <mvaldes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/05 17:37:13 by mvaldes           #+#    #+#             */
-/*   Updated: 2021/07/16 16:35:01 by mvaldes          ###   ########.fr       */
+/*   Updated: 2021/07/16 16:53:54 by mvaldes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ static void	create_threads(t_innkeper *inn)
 	i = 0;
 	while (i < inn->in_ptr.nb_p)
 	{
-		// memset(&inn->p[i], 0, sizeof(inn->p[i]));
+		memset(&inn->p[i], 0, sizeof(t_philo));
 		inn->p[i].p_id = i;
 		inn->p[i].in = &inn->in_ptr;
 		inn->p[i].s_in = &inn->s_in;
@@ -68,7 +68,7 @@ static void	close_threads(t_innkeper *inn)
 		pthread_join(inn->p[i].t_id, NULL);
 		i++;
 	}
-	pthread_detach(inn->death_clock);
+	pthread_join(inn->death_clock, NULL);
 }
 
 static void	destroy_mutexts(t_innkeper *inn)

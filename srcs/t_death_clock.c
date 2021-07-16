@@ -6,7 +6,7 @@
 /*   By: mvaldes <mvaldes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/12 11:51:41 by mvaldes           #+#    #+#             */
-/*   Updated: 2021/07/16 15:06:03 by mvaldes          ###   ########.fr       */
+/*   Updated: 2021/07/16 17:12:39 by mvaldes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,13 +27,13 @@ static void	death_scenario(t_innkeper *inn, int i, long int x)
 
 static int	check_if_death(t_innkeper *inn, int first_time)
 {
-	long int		x;
-	int				i;
-	int				plts_eat;
-	int				p_alive;
+	int	i;
+	int	plts_eat;
+	int	p_alive;
 
 	i = 0;
-	while (i < inn->in_ptr.nb_p && inn->no_death)
+	while (i < inn->in_ptr.nb_p && (inn->no_death || \
+	inn->nb_completed < inn->in_ptr.nb_p))
 	{
 		pthread_mutex_lock(&inn->p[i].plts_lock);
 		pthread_mutex_lock(&inn->p[i].alive_lock);
@@ -41,28 +41,29 @@ static int	check_if_death(t_innkeper *inn, int first_time)
 		p_alive = inn->p[i].alive;
 		pthread_mutex_unlock(&inn->p[i].plts_lock);
 		pthread_mutex_unlock(&inn->p[i].alive_lock);
-		x = time_diff_ms(inn->p[i].lst_meal);
-		if (plts_eat == inn->in_ptr.plts_p_philo || x <= inn->in_ptr.time_die)
-			i++;
-		if ((plts_eat != inn->in_ptr.plts_p_philo && x > inn->in_ptr.time_die) \
-		|| (p_alive == 0))
+		if (plts_eat == inn->in_ptr.plts_p_philo)
+			inn->nb_completed += 1;
+		else if ((time_diff_ms(inn->p[i].lst_meal) > inn->in_ptr.time_die) || \
+		(p_alive == 0))
 		{
-			death_scenario(inn, i, x);
+			death_scenario(inn, i, time_diff_ms(inn->p[i].lst_meal));
 			return (0);
 		}
+		i++;
 	}
 	return (1);
 }
 
 void	*are_philo_dead(void *innkeeper)
 {
-	t_innkeper		*inn;
-	int				first_time;
+	t_innkeper	*inn;
+	int			first_time;
 
 	inn = (t_innkeper *)innkeeper;
+	inn->nb_completed = 0;
 	inn->no_death = 1;
 	first_time = 1;
-	while (inn->no_death)
+	while (inn->no_death && inn->nb_completed < inn->in_ptr.nb_p)
 	{
 		if (first_time)
 		{

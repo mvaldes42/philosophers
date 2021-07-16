@@ -6,7 +6,7 @@
 /*   By: mvaldes <mvaldes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/05 14:42:20 by mvaldes           #+#    #+#             */
-/*   Updated: 2021/07/14 18:01:04 by mvaldes          ###   ########.fr       */
+/*   Updated: 2021/07/16 17:01:56 by mvaldes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,7 @@ typedef struct s_innkeeper
 	t_shared_in		s_in;
 	pthread_t		death_clock;
 	bool			no_death;
+	int				nb_completed;
 }	t_innkeper;
 
 void	init_inputs(int argc, char **argv, t_innkeper *inn);
