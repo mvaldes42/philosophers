@@ -6,19 +6,12 @@
 /*   By: mvaldes <mvaldes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/05 17:37:13 by mvaldes           #+#    #+#             */
-/*   Updated: 2021/07/16 19:45:50 by mvaldes          ###   ########.fr       */
+/*   Updated: 2021/07/16 22:02:06 by mvaldes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 #include "utils.h"
-
-//4 410 200 200
-// 5 800 200 200
-// 4 310 200 100 (mort)
-// Avec 2 philosophes seulement pour tester le delai d'affichage de la mort
-// ya aussi 5 800 200 200 7
-// et 1 800 200 200 (depuis recemment)
 
 static void	init_mutexs(t_innkeper *inn)
 {
@@ -33,7 +26,8 @@ static void	init_mutexs(t_innkeper *inn)
 		i++;
 	}
 	pthread_mutex_init(&inn->s_in.talk_lock, NULL);
-	pthread_mutex_init(&inn->s_in.someone_died_lock, NULL);
+	pthread_mutex_init(&inn->s_in.smne_d_lock, NULL);
+	pthread_mutex_init(&inn->s_in.plts_e_tot_lock, NULL);
 }
 
 static void	create_threads(t_innkeper *inn)
@@ -41,7 +35,7 @@ static void	create_threads(t_innkeper *inn)
 	long long	i;
 
 	i = 0;
-	pthread_create(&inn->death_clock, NULL, are_philo_dead, (void *)inn);
+	pthread_create(&inn->death_clock, NULL, death_check_t, (void *)inn);
 	i = 0;
 	while (i < inn->in_ptr.nb_p)
 	{
@@ -52,7 +46,7 @@ static void	create_threads(t_innkeper *inn)
 			inn->p[i].right_lock = &inn->p[inn->in_ptr.nb_p - 1].left_lock;
 		else
 			inn->p[i].right_lock = &inn->p[i - 1].left_lock;
-		pthread_create(&inn->p[i].t_id, NULL, philosopher, (void *)&inn->p[i]);
+		pthread_create(&inn->p[i].t_id, NULL, philo_t, (void *)&inn->p[i]);
 		i++;
 	}
 }
@@ -83,7 +77,8 @@ static void	destroy_mutexts(t_innkeper *inn)
 		i++;
 	}
 	pthread_mutex_destroy(&inn->s_in.talk_lock);
-	pthread_mutex_destroy(&inn->s_in.someone_died_lock);
+	pthread_mutex_destroy(&inn->s_in.smne_d_lock);
+	pthread_mutex_destroy(&inn->s_in.plts_e_tot_lock);
 }
 
 int	main(int argc, char **argv)

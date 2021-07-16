@@ -6,7 +6,7 @@
 /*   By: mvaldes <mvaldes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/13 12:31:31 by mvaldes           #+#    #+#             */
-/*   Updated: 2021/07/15 16:24:34 by mvaldes          ###   ########.fr       */
+/*   Updated: 2021/07/16 21:52:59 by mvaldes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,10 +53,18 @@ void	ft_usleep_states(long int max_time, t_philo *p)
 	start_time = from_time_to_ms(time);
 	current_time = start_time;
 	while (((current_time - start_time) < max_time) && \
-	(!did_else_died(p->s_in) && !did_i_died(p)))
+	(!did_e_died(p->s_in) && !did_i_died(p)))
 	{
 		gettimeofday(&time, NULL);
 		current_time = from_time_to_ms(time);
 		usleep(10);
 	}
+}
+
+long int	time_diff_ms(struct timeval	time_compare)
+{
+	struct timeval	current_time;
+
+	gettimeofday(&current_time, NULL);
+	return (from_time_to_ms(current_time) - from_time_to_ms(time_compare));
 }

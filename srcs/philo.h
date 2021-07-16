@@ -6,7 +6,7 @@
 /*   By: mvaldes <mvaldes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/05 14:42:20 by mvaldes           #+#    #+#             */
-/*   Updated: 2021/07/16 20:09:30 by mvaldes          ###   ########.fr       */
+/*   Updated: 2021/07/16 22:25:08 by mvaldes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,18 +22,13 @@
 # include <stdarg.h>
 # include <math.h>
 
-typedef enum e_states
-{
-	EATING,
-	SLEEPING,
-	THINKING,
-}	t_states;
-
 typedef struct s_shared_inputs
 {
 	pthread_mutex_t	talk_lock;
-	pthread_mutex_t	someone_died_lock;
-	int				someone_died;
+	pthread_mutex_t	smne_d_lock;
+	int				smne_died;
+	pthread_mutex_t	plts_e_tot_lock;
+	long long		plts_e_tot;
 }	t_shared_in;
 
 typedef struct s_inputs
@@ -79,8 +74,8 @@ typedef struct s_innkeeper
 
 void	init_inputs(int argc, char **argv, t_innkeper *inn);
 
-void	*philosopher(void *philosoher);
-void	*are_philo_dead(void *innkeeper);
+void	*philo_t(void *philosoher);
+void	*death_check_t(void *innkeeper);
 
 int		p_eat(t_philo *p);
 int		p_sleep(t_philo *p);

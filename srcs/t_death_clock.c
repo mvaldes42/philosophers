@@ -6,7 +6,7 @@
 /*   By: mvaldes <mvaldes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/12 11:51:41 by mvaldes           #+#    #+#             */
-/*   Updated: 2021/07/16 17:12:39 by mvaldes          ###   ########.fr       */
+/*   Updated: 2021/07/16 21:54:51 by mvaldes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,9 @@ static void	death_scenario(t_innkeper *inn, int i, long int x)
 	inn->p[i].alive = 0;
 	pthread_mutex_unlock(&inn->p[i].alive_lock);
 	inn->no_death = 0;
-	pthread_mutex_lock(&inn->s_in.someone_died_lock);
-	inn->s_in.someone_died = 1;
-	pthread_mutex_unlock(&inn->s_in.someone_died_lock);
+	pthread_mutex_lock(&inn->s_in.smne_d_lock);
+	inn->s_in.smne_died = 1;
+	pthread_mutex_unlock(&inn->s_in.smne_d_lock);
 }
 
 static int	check_if_death(t_innkeper *inn, int first_time)
@@ -54,7 +54,7 @@ static int	check_if_death(t_innkeper *inn, int first_time)
 	return (1);
 }
 
-void	*are_philo_dead(void *innkeeper)
+void	*death_check_t(void *innkeeper)
 {
 	t_innkeper	*inn;
 	int			first_time;
