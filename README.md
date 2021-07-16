@@ -243,18 +243,18 @@ EAT
 - [x] check thread errors = valgrind --tool=drd
 - [x] check thread and locking order errors = valgrind --tool=helgrind /!\ Does "possible" locking order error checking without checking if the code avoids locking errors in the first place.
 
-./philo 4 410 200 200
-./philo 5 800 200 200
-./philo 4 310 200 100 (mort)
-./philo 4 1 200 100 (mort)
-./philo 5 800 200 200 7
-./philo 1 800 200 200
+./philo 4 410 200 200<br>
+./philo 5 800 200 200<br>
+./philo 4 310 200 100 (mort)<br>
+./philo 4 1 200 100 (mort)<br>
+./philo 5 800 200 200 7<br>
+./philo 1 800 200 200<br>
 
 ### RECOMMANDATION
 
 I would recommand during dev to have a check on who takes which fork id like so :
 
-// say_status_nb("take left fork", p->p_id, p->l_frk_id, p->in->start_time);
-// say_status_nb("take right fork", p->p_id, p->r_frk_id, p->in->start_time);
-// say_status_nb("down left fork", p->p_id, p->l_frk_id, p->in->start_time);
-// say_status_nb("down right fork", p->p_id, p->r_frk_id, p->in->start_time);
+// say_status_nb("take left fork", p->p_id, p->l_frk_id, p->in->start_time);<br>
+// say_status_nb("take right fork", p->p_id, p->r_frk_id, p->in->start_time);<br>
+// say_status_nb("down left fork", p->p_id, p->l_frk_id, p->in->start_time);<br>
+// say_status_nb("down right fork", p->p_id, p->r_frk_id, p->in->start_time);<br>
