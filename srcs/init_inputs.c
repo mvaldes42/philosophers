@@ -6,7 +6,7 @@
 /*   By: mvaldes <mvaldes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/12 11:52:26 by mvaldes           #+#    #+#             */
-/*   Updated: 2021/07/15 17:09:21 by mvaldes          ###   ########.fr       */
+/*   Updated: 2021/07/16 16:37:28 by mvaldes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,6 @@ void	init_inputs(int argc, char **argv, t_innkeper *inn)
 	inputs = &inn->in_ptr;
 	memset(inputs, 0, sizeof(*inputs));
 	memset(&inn->s_in, 0, sizeof(inn->s_in));
-	inn->p = malloc((inn->in_ptr.nb_p + 1) * sizeof(inn->p));
 	parse_inputs(argc, argv, inn, inputs);
+	inn->p = malloc((inn->in_ptr.nb_p) * sizeof(inn->p));
 }

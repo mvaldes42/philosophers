@@ -6,7 +6,7 @@
 /*   By: mvaldes <mvaldes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/12 11:50:33 by mvaldes           #+#    #+#             */
-/*   Updated: 2021/07/15 16:20:48 by mvaldes          ###   ########.fr       */
+/*   Updated: 2021/07/16 16:22:20 by mvaldes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,6 @@
 
 static void	init_philo(t_philo *p)
 {
-	pthread_mutex_init(&p->plts_lock, NULL);
-	pthread_mutex_init(&p->alive_lock, NULL);
 	p->r_frk_id = p->p_id - 1;
 	p->l_frk_id = p->p_id;
 	if (p->r_frk_id == 0)

@@ -6,7 +6,7 @@
 /*   By: mvaldes <mvaldes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/12 11:51:41 by mvaldes           #+#    #+#             */
-/*   Updated: 2021/07/15 16:09:02 by mvaldes          ###   ########.fr       */
+/*   Updated: 2021/07/16 15:06:03 by mvaldes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,8 @@ static int	check_if_death(t_innkeper *inn, int first_time)
 	int				plts_eat;
 	int				p_alive;
 
-	i = 1;
-	while (i <= inn->in_ptr.nb_p && inn->no_death)
+	i = 0;
+	while (i < inn->in_ptr.nb_p && inn->no_death)
 	{
 		pthread_mutex_lock(&inn->p[i].plts_lock);
 		pthread_mutex_lock(&inn->p[i].alive_lock);
