@@ -6,13 +6,15 @@
 /*   By: mvaldes <mvaldes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/12 11:46:08 by mvaldes           #+#    #+#             */
-/*   Updated: 2021/07/16 21:52:57 by mvaldes          ###   ########.fr       */
+/*   Updated: 2021/07/20 11:48:59 by mvaldes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef UTILS_H
 # define UTILS_H
 # include "philo.h"
+
+long long	ft_atoi(const char *str);
 
 void		exit_success(t_innkeper *innkeeper);
 long int	from_time_to_ms(struct timeval what_time);

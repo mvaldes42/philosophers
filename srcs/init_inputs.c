@@ -6,7 +6,7 @@
 /*   By: mvaldes <mvaldes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/12 11:52:26 by mvaldes           #+#    #+#             */
-/*   Updated: 2021/07/20 11:26:05 by mvaldes          ###   ########.fr       */
+/*   Updated: 2021/07/20 11:51:00 by mvaldes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,12 +34,12 @@ static void	args_are_valid(int argc, char **argv, t_innkeper *inn, t_inputs *in)
 static void	parse_inputs(int argc, char **argv, t_innkeper *inn, t_inputs *in)
 {
 	gettimeofday(&inn->in_ptr.start_time, NULL);
-	in->nb_p = atoi(argv[1]);
-	in->time_die = atoi(argv[2]);
-	in->time_eat = atoi(argv[3]);
-	in->time_sleep = atoi(argv[4]);
+	in->nb_p = (int)ft_atoi(argv[1]);
+	in->time_die = (int)ft_atoi(argv[2]);
+	in->time_eat = (int)ft_atoi(argv[3]);
+	in->time_sleep = (int)ft_atoi(argv[4]);
 	if (argc == 6)
-		in->plts_p_philo = atoi(argv[5]);
+		in->plts_p_philo = ft_atoi(argv[5]);
 	else
 		in->plts_p_philo = __LONG_LONG_MAX__;
 	if (in->nb_p % 2 == 1)

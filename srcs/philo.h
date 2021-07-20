@@ -6,7 +6,7 @@
 /*   By: mvaldes <mvaldes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/05 14:42:20 by mvaldes           #+#    #+#             */
-/*   Updated: 2021/07/16 22:25:08 by mvaldes          ###   ########.fr       */
+/*   Updated: 2021/07/20 11:45:33 by mvaldes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,7 @@
 # include <stdbool.h>
 # include <sys/time.h>
 # include <string.h>
-# include <stdarg.h>
-# include <math.h>
+# include <limits.h>
 
 typedef struct s_shared_inputs
 {
