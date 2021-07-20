@@ -6,7 +6,7 @@
 /*   By: mvaldes <mvaldes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/12 11:52:26 by mvaldes           #+#    #+#             */
-/*   Updated: 2021/07/20 11:55:53 by mvaldes          ###   ########.fr       */
+/*   Updated: 2021/07/20 12:19:45 by mvaldes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ int	init_inputs(int argc, char **argv, t_innkeper *inn)
 	inputs = &inn->in_ptr;
 	memset(inputs, 0, sizeof(*inputs));
 	memset(&inn->s_in, 0, sizeof(inn->s_in));
+	memset(&inputs->start_time, 0, sizeof(struct timeval));
 	if (!args_are_valid(argc, argv, inn, inputs))
 		return (0);
 	parse_inputs(argc, argv, inn, inputs);

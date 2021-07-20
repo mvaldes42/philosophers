@@ -6,7 +6,7 @@
 /*   By: mvaldes <mvaldes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/12 11:50:33 by mvaldes           #+#    #+#             */
-/*   Updated: 2021/07/20 10:47:52 by mvaldes          ###   ########.fr       */
+/*   Updated: 2021/07/20 12:20:27 by mvaldes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ static void	init_philo(t_philo *p)
 	pthread_mutex_lock(&p->alive_lock);
 	p->alive = 1;
 	pthread_mutex_unlock(&p->alive_lock);
+	memset(&p->lst_meal, 0, sizeof(struct timeval));
 	gettimeofday(&p->lst_meal, NULL);
 }
 
