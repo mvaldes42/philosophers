@@ -6,7 +6,7 @@
 /*   By: mvaldes <mvaldes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/12 11:52:26 by mvaldes           #+#    #+#             */
-/*   Updated: 2021/07/20 11:10:54 by mvaldes          ###   ########.fr       */
+/*   Updated: 2021/07/20 11:26:05 by mvaldes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static void	exit_failure(t_innkeper *inn)
 
 static void	args_are_valid(int argc, char **argv, t_innkeper *inn, t_inputs *in)
 {
-	if (argc < 4)
+	if (argc <= 4)
 		exit_failure(inn);
 	if (strchr(argv[1], '.') || strchr(argv[2], '.') || strchr(argv[3], '.') \
 	|| strchr(argv[4], '.') || \
