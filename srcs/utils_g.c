@@ -6,13 +6,13 @@
 /*   By: mvaldes <mvaldes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/13 12:31:31 by mvaldes           #+#    #+#             */
-/*   Updated: 2021/07/16 21:52:59 by mvaldes          ###   ########.fr       */
+/*   Updated: 2021/07/20 11:56:38 by mvaldes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "utils.h"
 
-void	exit_success(t_innkeper *innkeeper)
+void	free_philo(t_innkeper *innkeeper)
 {
 	if (innkeeper->p)
 		free(innkeeper->p);

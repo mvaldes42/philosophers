@@ -6,7 +6,7 @@
 /*   By: mvaldes <mvaldes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/12 11:46:08 by mvaldes           #+#    #+#             */
-/*   Updated: 2021/07/20 11:48:59 by mvaldes          ###   ########.fr       */
+/*   Updated: 2021/07/20 11:56:56 by mvaldes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 
 long long	ft_atoi(const char *str);
 
-void		exit_success(t_innkeper *innkeeper);
+void		free_philo(t_innkeper *innkeeper);
 long int	from_time_to_ms(struct timeval what_time);
 void		ft_usleep(long int max_time);
 void		ft_usleep_states(long int max_time, t_philo *p);

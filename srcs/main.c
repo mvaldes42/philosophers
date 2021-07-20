@@ -6,7 +6,7 @@
 /*   By: mvaldes <mvaldes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/05 17:37:13 by mvaldes           #+#    #+#             */
-/*   Updated: 2021/07/16 22:02:06 by mvaldes          ###   ########.fr       */
+/*   Updated: 2021/07/20 11:59:39 by mvaldes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,11 +87,12 @@ int	main(int argc, char **argv)
 	t_innkeper	inn;
 
 	memset(&inn, 0, sizeof(inn));
-	init_inputs(argc, argv, &inn);
+	if (!init_inputs(argc, argv, &inn))
+		return (0);
 	init_mutexs(&inn);
 	create_threads(&inn);
 	close_threads(&inn);
 	destroy_mutexts(&inn);
-	exit_success(&inn);
-	return (0);
+	free_philo(&inn);
+	return (1);
 }

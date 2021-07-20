@@ -6,7 +6,7 @@
 /*   By: mvaldes <mvaldes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/05 14:42:20 by mvaldes           #+#    #+#             */
-/*   Updated: 2021/07/20 11:45:33 by mvaldes          ###   ########.fr       */
+/*   Updated: 2021/07/20 11:52:55 by mvaldes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ typedef struct s_innkeeper
 	int				nb_completed;
 }	t_innkeper;
 
-void	init_inputs(int argc, char **argv, t_innkeper *inn);
+int		init_inputs(int argc, char **argv, t_innkeper *inn);
 
 void	*philo_t(void *philosoher);
 void	*death_check_t(void *innkeeper);
