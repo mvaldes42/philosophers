@@ -6,7 +6,7 @@
 /*   By: mvaldes <mvaldes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/13 12:31:31 by mvaldes           #+#    #+#             */
-/*   Updated: 2021/07/20 11:56:38 by mvaldes          ###   ########.fr       */
+/*   Updated: 2021/07/20 12:23:36 by mvaldes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ void	ft_usleep(long int max_time)
 	long int		current_time;
 	struct timeval	time;
 
+	memset(&time, 0, sizeof(struct timeval));
 	gettimeofday(&time, NULL);
 	start_time = from_time_to_ms(time);
 	current_time = start_time;
@@ -49,6 +50,7 @@ void	ft_usleep_states(long int max_time, t_philo *p)
 	long int		current_time;
 	struct timeval	time;
 
+	memset(&time, 0, sizeof(struct timeval));
 	gettimeofday(&time, NULL);
 	start_time = from_time_to_ms(time);
 	current_time = start_time;
@@ -65,6 +67,7 @@ long int	time_diff_ms(struct timeval	time_compare)
 {
 	struct timeval	current_time;
 
+	memset(&current_time, 0, sizeof(struct timeval));
 	gettimeofday(&current_time, NULL);
 	return (from_time_to_ms(current_time) - from_time_to_ms(time_compare));
 }
