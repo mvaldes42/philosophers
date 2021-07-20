@@ -6,7 +6,7 @@
 /*   By: mvaldes <mvaldes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/12 11:48:55 by mvaldes           #+#    #+#             */
-/*   Updated: 2021/07/16 22:04:13 by mvaldes          ###   ########.fr       */
+/*   Updated: 2021/07/20 10:49:11 by mvaldes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,15 @@ int	p_think(t_philo *p)
 		pthread_mutex_unlock(&p->alive_lock);
 		return (0);
 	}
-	else if (!did_i_died(p) && p->plts_eaten < p->plts_max)
-		regular_status_out(p, "is thinking");
+	regular_status_out(p, "is thinking");
+	if (p->plts_eaten == 0 && p->is_odd == 0)
+	{
+		if (p->p_id == p->in->nb_p - 1)
+			ft_usleep_states(p->in->time_eat * 2, p);
+		else
+			ft_usleep_states(p->in->time_eat, p);
+	}
+	else
+		ft_usleep_states(p->in->time_thk, p);
 	return (1);
 }

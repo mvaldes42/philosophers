@@ -6,7 +6,7 @@
 /*   By: mvaldes <mvaldes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/06 11:08:36 by mvaldes           #+#    #+#             */
-/*   Updated: 2021/07/19 16:52:31 by mvaldes          ###   ########.fr       */
+/*   Updated: 2021/07/20 10:59:49 by mvaldes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	regular_status_out(t_philo *p, char *str)
 
 	pthread_mutex_lock(&p->s_in->talk_lock);
 	x = time_diff_ms(p->in->start_time);
-	printf("%4d -> %d %s\n", x, p->p_id, str);
+	printf("%4d -> %d %s\n", x, p->p_id + 1, str);
 	pthread_mutex_unlock(&p->s_in->talk_lock);
 }
 
@@ -29,7 +29,7 @@ void	eating_status_out(t_philo *p, char *str)
 
 	pthread_mutex_lock(&p->s_in->talk_lock);
 	x = time_diff_ms(p->in->start_time);
-	printf("%4d -> %d %s plate %lld\n", x, p->p_id, str, p->plts_eaten);
+	printf("%4d -> %d %s plate %lld\n", x, p->p_id + 1, str, p->plts_eaten);
 	pthread_mutex_unlock(&p->s_in->talk_lock);
 }
 
@@ -41,7 +41,7 @@ void	death_status_out(t_philo *p)
 	pthread_mutex_lock(&p->s_in->talk_lock);
 	last_meal = time_diff_ms(p->lst_meal);
 	x = time_diff_ms(p->in->start_time);
-	printf("%4d -> %d is dead after %dms\n", x, p->p_id, last_meal);
+	printf("%4d -> %d is dead after %dms\n", x, p->p_id + 1, last_meal);
 	pthread_mutex_unlock(&p->s_in->talk_lock);
 }
 

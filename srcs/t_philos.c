@@ -6,7 +6,7 @@
 /*   By: mvaldes <mvaldes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/12 11:50:33 by mvaldes           #+#    #+#             */
-/*   Updated: 2021/07/19 17:07:53 by mvaldes          ###   ########.fr       */
+/*   Updated: 2021/07/20 10:47:52 by mvaldes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ static int	circle_states(t_philo	*p)
 	return (1);
 }
 
-static int	smol_circle_states(t_philo	*p)
+static int	even_circle_states(t_philo	*p)
 {
 	if (!did_i_died(p) && p->plts_eaten < p->plts_max)
 		if (did_e_died(p->s_in) || !p_think(p))
@@ -75,7 +75,7 @@ void	*philo_t(void *philosoher)
 		}
 		else if (p->plts_eaten == 0 && p->is_odd == 0)
 		{
-			if (!smol_circle_states(p))
+			if (!even_circle_states(p))
 				break ;
 		}
 		if (p->plts_eaten == p->plts_max)
