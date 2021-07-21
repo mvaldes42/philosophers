@@ -6,7 +6,7 @@
 #    By: mvaldes <mvaldes@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/07/05 17:59:50 by mvaldes           #+#    #+#              #
-#    Updated: 2021/07/20 11:49:39 by mvaldes          ###   ########.fr        #
+#    Updated: 2021/07/20 19:57:53 by mvaldes          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,14 +22,14 @@ SRCS =	srcs/main.c\
 		srcs/t_death_clock.c\
 
 OBJS = $(SRCS:.c=.o)
-CC = @gcc
-RM = @/bin/rm -f
-CC_FLAGS = -Wall -Wextra -Werror
+CC = gcc
+RM = rm -f
+CC_FLAGS = -Wall -Wextra -Werror -pthread
 
 all:		$(NAME)
 
-$(NAME):	compile $(OBJS)
-			$(CC) $(CC_FLAGS) $(OBJS) -o $(NAME) -pthread
+$(NAME):	$(OBJS)
+			$(CC) $(CC_FLAGS) $(OBJS) -o $(NAME)
 			@echo ">> compile done"
 
 clean:
